@@ -2,6 +2,26 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QHBoxLayout>
+#include <QVBoxLayout>
+#include <QGridLayout>
+#include <QPushButton>
+#include <QComboBox>
+#include <QLabel>
+#include <QString>
+#include <QFileDialog>
+#include <QMessageBox>
+#include <QMouseEvent>
+#include <QFormLayout>
+#include <QDialog>
+#include <QLineEdit>
+#include <QList>
+#include <QDialogButtonBox>
+#include <QButtonGroup>
+#include <QRadioButton>
+#include <QResizeEvent>
+#include <QTextStream>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -14,6 +34,11 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
+private slots:
+    void on_actionClose_triggered();
+
+    void on_actionOpen_triggered();
 
 private:
     Ui::MainWindow *ui;
