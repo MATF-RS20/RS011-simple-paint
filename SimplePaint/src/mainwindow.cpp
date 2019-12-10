@@ -31,8 +31,16 @@ void MainWindow::on_actionClose_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
-            tr("Open Picture"), "",
-             tr("Image Files (*.png *.jpg *.jpeg)"));
+            tr("Open Picture"),
+            QDir::currentPath(),                     // ??????
+            tr("Image Files (*.png *.jpg *.jpeg)")
+           );
 
-    //std::cout << fileName.toStdString() << std::endl;
+    std::cout << fileName.toStdString() << std::endl;
+}
+
+void MainWindow::on_actionColor_Pallete_triggered() {
+
+    QColor newColor = QColorDialog::getColor(Qt::black);
+    //std::cout << newColor.name().toStdString() << std::endl;
 }

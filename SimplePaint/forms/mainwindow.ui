@@ -70,7 +70,7 @@
      <rect>
       <x>307</x>
       <y>163</y>
-      <width>142</width>
+      <width>159</width>
       <height>75</height>
      </rect>
     </property>
@@ -394,7 +394,7 @@
     <string>Color Pallete</string>
    </property>
    <property name="toolTip">
-    <string>Chose Color</string>
+    <string>Choose Color</string>
    </property>
   </action>
  </widget>

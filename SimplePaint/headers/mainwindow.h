@@ -21,7 +21,9 @@
 #include <QRadioButton>
 #include <QResizeEvent>
 #include <QTextStream>
-
+#include <QColorDialog>
+#include <QImage>
+#include <QSize>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -39,6 +41,8 @@ private slots:
     void on_actionClose_triggered();
 
     void on_actionOpen_triggered();
+
+    void on_actionColor_Pallete_triggered();
 
 private:
     Ui::MainWindow *ui;
