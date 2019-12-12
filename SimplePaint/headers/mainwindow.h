@@ -46,5 +46,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    QColor color = Qt::black;
 };
 #endif // MAINWINDOW_H

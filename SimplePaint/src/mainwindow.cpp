@@ -40,7 +40,6 @@ void MainWindow::on_actionOpen_triggered()
 }
 
 void MainWindow::on_actionColor_Pallete_triggered() {
+    color = QColorDialog::getColor(color);
 
-    QColor newColor = QColorDialog::getColor(Qt::black);
-    //std::cout << newColor.name().toStdString() << std::endl;
 }
