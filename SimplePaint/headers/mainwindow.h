@@ -25,6 +25,9 @@
 #include <QImage>
 #include <QSize>
 
+#include <QPixmap>
+#include "qpainter.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -44,8 +47,14 @@ private slots:
 
     void on_actionColor_Pallete_triggered();
 
+
 private:
     Ui::MainWindow *ui;
     QColor color = Qt::black;
+
+protected:
+    //void paintEvent(QPaintEvent* e);
+    //void mousePressEvent(QMouseEvent *event);
+    //void mouseReleaseEvent(QMouseEvent *event);
 };
 #endif // MAINWINDOW_H

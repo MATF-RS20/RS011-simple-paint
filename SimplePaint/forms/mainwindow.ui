@@ -25,7 +25,21 @@
   <property name="tabShape">
    <enum>QTabWidget::Rounded</enum>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLabel" name="image_label">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>26</y>
+      <width>651</width>
+      <height>401</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+  </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>

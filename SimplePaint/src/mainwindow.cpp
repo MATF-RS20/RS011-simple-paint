@@ -7,6 +7,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QWidget::showMaximized();
 }
 
 MainWindow::~MainWindow()
@@ -14,6 +15,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+// void MainWindow::mousePressEvent(QMouseEvent *event) {}
+// void MainWindow::mouseReleaseEvent(QMouseEvent *event) { event->pos();}
+// void MainWindow::paintEvent(QPaintEvenet *event) {}
 
 void MainWindow::on_actionClose_triggered()
 {
@@ -32,14 +36,22 @@ void MainWindow::on_actionOpen_triggered()
 {
     QString fileName = QFileDialog::getOpenFileName(this,
             tr("Open Picture"),
-            QDir::currentPath(),                     // ??????
+            QDir::currentPath(),
             tr("Image Files (*.png *.jpg *.jpeg)")
            );
 
-    std::cout << fileName.toStdString() << std::endl;
+    // TODO:             mozda ce biti napravljena klasa za sliku
+    QImage img(fileName);
+    QPixmap pm = QPixmap::fromImage(img);
+
+    // velicina naseg prozora (mainwindow): QSize size = this->size();
+
+    ui->image_label->setGeometry(10, 10, pm.width()/2, pm.height()/2);
+    ui->image_label->setPixmap(pm);
+    ui->image_label->setScaledContents(true);
 }
 
 void MainWindow::on_actionColor_Pallete_triggered() {
     color = QColorDialog::getColor(color);
-
 }
+
