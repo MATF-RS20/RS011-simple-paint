@@ -46,7 +46,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -84,8 +84,8 @@
      <rect>
       <x>307</x>
       <y>163</y>
-      <width>159</width>
-      <height>75</height>
+      <width>148</width>
+      <height>69</height>
      </rect>
     </property>
     <property name="title">
@@ -98,7 +98,6 @@
    <addaction name="menuImage"/>
    <addaction name="menuHelp"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
    <property name="enabled">
     <bool>true</bool>

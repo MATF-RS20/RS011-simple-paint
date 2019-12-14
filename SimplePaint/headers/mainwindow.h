@@ -24,6 +24,7 @@
 #include <QColorDialog>
 #include <QImage>
 #include <QSize>
+#include <QCloseEvent>
 
 #include <QPixmap>
 #include "qpainter.h"
@@ -38,7 +39,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-    ~MainWindow();
+    ~MainWindow() override;
 
 private slots:
     void on_actionClose_triggered();
@@ -47,10 +48,15 @@ private slots:
 
     void on_actionColor_Pallete_triggered();
 
+    void closeEvent(QCloseEvent*) override;
+
 
 private:
     Ui::MainWindow *ui;
     QColor color = Qt::black;
+    QString path = QDir::home().path() + "/Pictures";
+    int reserved_place = 50;
+
 
 protected:
     //void paintEvent(QPaintEvent* e);
