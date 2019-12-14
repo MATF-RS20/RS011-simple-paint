@@ -41,6 +41,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
+    void openImage(QString filename);
+
 private slots:
     void on_actionClose_triggered();
 
