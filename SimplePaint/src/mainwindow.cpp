@@ -1,7 +1,7 @@
 #include <iostream>
-#include "headers/mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QDebug>
+#include "headers/mainwindow.h"
 #include "headers/image.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -11,15 +11,49 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     QWidget::showMaximized();
 
+    // postavljanje centralnog widget-a
+    setCentralWidget(ui->centralwidget);
+
 }
 
 MainWindow::~MainWindow(){
     delete ui;
 }
 
-// void MainWindow::mousePressEvent(QMouseEvent *event) {}
-// void MainWindow::mouseReleaseEvent(QMouseEvent *event) { event->pos();}
-// void MainWindow::paintEvent(QPaintEvenet *event) {}
+void MainWindow::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton) {
+        lastPoint = event->pos();
+        scribbling = true;
+        //std::cout << "Press x i y: " << event->x() << " " << event->y() << std::endl;
+    }
+}
+
+void MainWindow::mouseMoveEvent(QMouseEvent *event)
+{
+    if ((event->buttons() & Qt::LeftButton) && scribbling) {
+        drawLineTo(event->pos());
+    }
+}
+
+void MainWindow::mouseReleaseEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton && scribbling) {
+        drawLineTo(event->pos());
+        scribbling = false;
+    }
+}
+
+void MainWindow::paintEvent(QPaintEvent *event){
+    QPainter painter(this);
+
+    qDebug() << "Bilo sta";
+    // Returns the rectangle that needs to be updated
+    QRect dirtyRect = event->rect();
+    painter.drawImage(dirtyRect, img, dirtyRect);
+
+
+}
 
 void MainWindow::on_actionClose_triggered(){
     QMessageBox::StandardButton reply;
@@ -38,8 +72,7 @@ void MainWindow::closeEvent(QCloseEvent* event){
     event->ignore();
 }
 
-void MainWindow::on_actionOpen_triggered()
-{
+void MainWindow::on_actionOpen_triggered(){
     QString fileName = QFileDialog::getOpenFileName(this,
             tr("Open Picture"),
             path,
@@ -60,25 +93,43 @@ void MainWindow::on_actionColor_Pallete_triggered() {
     color = QColorDialog::getColor(color);
 }
 
+//TODO:
 //predlazem da dodamo slider-e, pa i ako doda neko vecu sliku, videce se cela, samo ce
 //morati da pomera slider da gleda dalje
 //reserved_places dodat jer racuna velicinu celog prostora, a mi ga spustamo zatim i pomeramo udesno,
 //pa cisto da budemo da za sada sigurno staje u ceo prozor slika
-void MainWindow::openImage(QString filename)
-{
-    image img(filename);
-    QPixmap pm = QPixmap::fromImage(img.getImage());
+void MainWindow::openImage(QString filename){
+
+    image iimg(filename);
+    img = iimg.getImage();
+    QPixmap pm = QPixmap::fromImage(iimg.getImage());
 
     QSize size = this->size();                                               // velicina naseg prozora (mainwindow)
     auto height = (size.height()-MainWindow::reserved_place)/(pm.height()*1.0);
-    auto width  = (size.width()-MainWindow::reserved_place)/(pm.width()*1.0);;
+    auto width  = (size.width()-MainWindow::reserved_place)/(pm.width()*1.0);
 
     auto factor = std::min(height, width);
-    qDebug() << factor;
+    //qDebug() << factor;
 
-    ui->image_label->setGeometry(10, 10,
+    pm.scaledToWidth(static_cast<int>(width*factor));
+
+    ui->centralwidget->setGeometry(10, 10,
                                  static_cast<int>(pm.width()*factor),
                                  static_cast<int>(pm.height()*factor));
-    ui->image_label->setPixmap(pm);
-    ui->image_label->setScaledContents(true);
+    centralWidget()->update();
+}
+
+void MainWindow::drawLineTo(const QPoint &endPoint){
+    QPainter painter(&img);
+
+    painter.setPen(QPen(color, 1, Qt::SolidLine, Qt::RoundCap,
+                        Qt::RoundJoin));
+
+    painter.drawLine(lastPoint, endPoint);
+
+    int rad = (10 / 2) + 2;
+
+    update(QRect(lastPoint, endPoint).normalized()
+                                     .adjusted(-rad, -rad, +rad, +rad));
+    lastPoint = endPoint;
 }

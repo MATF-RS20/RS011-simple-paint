@@ -29,8 +29,8 @@
    <widget class="QLabel" name="image_label">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>26</y>
+      <x>130</x>
+      <y>20</y>
       <width>651</width>
       <height>401</height>
      </rect>

@@ -58,11 +58,15 @@ private:
     QColor color = Qt::black;
     QString path = QDir::home().path() + "/Pictures";
     int reserved_place = 50;
-
+    QPoint lastPoint;
+    bool scribbling = false;
+    QImage img;
 
 protected:
-    //void paintEvent(QPaintEvent* e);
-    //void mousePressEvent(QMouseEvent *event);
-    //void mouseReleaseEvent(QMouseEvent *event);
+    void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+    void drawLineTo(const QPoint &endPoint);
+    void paintEvent(QPaintEvent *event) override;
 };
 #endif // MAINWINDOW_H
