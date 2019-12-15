@@ -28,6 +28,9 @@
 
 #include <QPixmap>
 #include "qpainter.h"
+#include "headers/image.h"
+
+class image;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -41,13 +44,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
-    void openImage(QString filename);
-
 private slots:
     void on_actionClose_triggered();
-
     void on_actionOpen_triggered();
-
     void on_actionColor_Pallete_triggered();
 
     void closeEvent(QCloseEvent*) override;
@@ -55,18 +54,12 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    QColor color = Qt::black;
-    QString path = QDir::home().path() + "/Pictures";
-    int reserved_place = 50;
-    QPoint lastPoint;
-    bool scribbling = false;
-    QImage img;
+    QColor color;
+    QString path;
+    int reserved_place;
+    image *scribbleArea;
 
 protected:
-    void mousePressEvent(QMouseEvent *event) override;
-    void mouseMoveEvent(QMouseEvent *event) override;
-    void mouseReleaseEvent(QMouseEvent *event) override;
-    void drawLineTo(const QPoint &endPoint);
-    void paintEvent(QPaintEvent *event) override;
+    //void openImage(QString filename);
 };
 #endif // MAINWINDOW_H
