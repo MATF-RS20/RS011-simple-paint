@@ -2,16 +2,18 @@
 #include "./headers/image.h"
 
 image::image(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+      modified(false),
+      drawing(false),
+      myColor(Qt::black),
+      whiteBackground(true)
 {
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
 
-    modified = false;
-    drawing = false;
+    // TODO
     colorPicker = false;
     myWidth = 2;
-    myColor = Qt::black;
 }
 
 image::~image(){}
@@ -24,10 +26,8 @@ bool image::openImage(const QString &fileName)
     if (!loadedImage.load(fileName))
         return false;
 
-    QSize newSize = loadedImage.size().expandedTo(size());
+    QSize newSize = loadedImage.size();
 
-    //std::cerr << loadedImage.size().height() << "    " << loadedImage.size().width() << std::endl;
-    //std::cerr << newSize.height() << "   "  << newSize.width() << std::endl;
     resizeImage(&loadedImage, newSize);
     img = loadedImage;
 
@@ -77,8 +77,12 @@ void image::mouseReleaseEvent(QMouseEvent *event)
         drawing = false;
     }
     else if (colorPicker){
+        std::cout << myColor.name().toStdString() << std::endl;
+
         QColor pickedColor = img.pixelColor(event->pos());
         setPenColor(pickedColor);
+
+        std::cout << myColor.name().toStdString() << std::endl;
         colorPicker = false;
         drawing = true;
     }
@@ -91,18 +95,32 @@ void image::paintEvent(QPaintEvent *event){
     painter.drawImage(dirtyRect, img, dirtyRect);
 }
 
-// TODO: ne radi bas kako treba jo uvek!!!!!!!!!!!!!!!!!!
+// TODO: ne radi bas kako treba, i treba slider
 void image::resizeEvent(QResizeEvent *event)
 {
-    if (width() > img.width() || height() > img.height()) {
-        int newWidth = qMax(width() + 128, img.width());
-        int newHeight = qMax(height() + 128, img.height());
+    if ((width() > img.width() || height() > img.height()) && whiteBackground) {
+        int newWidth = qMax(width()-20, img.width());
+        int newHeight = qMax(height() + 120, img.height());
         resizeImage(&img, QSize(newWidth, newHeight));
+        whiteBackground = false;
         update();
     }
-
-    //QPixmap pm = QPixmap::fromImage(img);
     QWidget::resizeEvent(event);
+}
+
+
+void image::resizeImage(QImage *img, const QSize &newSize)
+{
+    // Check if we need to redraw the image
+    if (img->size() == newSize)
+        return;
+
+    QImage newImage(newSize, QImage::Format_RGB32);
+    newImage.fill(qRgb(255, 255, 255));
+
+    QPainter painter(&newImage);
+    painter.drawImage(QPoint(0, 0), *img);
+    *img = newImage;
 }
 
 void image::drawLineTo(const QPoint &endPoint)
@@ -121,23 +139,6 @@ void image::drawLineTo(const QPoint &endPoint)
                                      .adjusted(-rad, -rad, +rad, +rad));
     lastPoint = endPoint;
 }
-
-void image::resizeImage(QImage *img, const QSize &newSize)
-{
-    // Check if we need to redraw the image
-    if (img->size() == newSize)
-        return;
-
-    QImage newImage(newSize, QImage::Format_RGB32);
-    newImage.fill(qRgb(255, 255, 255));
-
-    QPainter painter(&newImage);
-    painter.drawImage(QPoint(0, 0), *img);
-    *img = newImage;
-}
-
-
-
 
 
 

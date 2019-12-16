@@ -8,17 +8,16 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    , ui(new Ui::MainWindow),
+      color(Qt::black),
+      path(QDir::home().path() + "/Pictures")
 {
     ui->setupUi(this);
     QWidget::showMaximized();
 
-    color = Qt::black;
-    path = QDir::home().path() + "/Pictures";
     reserved_place = 50;
 
     // postavljanje centralnog widget-a
-    //setCentralWidget(ui->centralwidget);
     scribbleArea = new image;
     setCentralWidget(scribbleArea);
 }

@@ -65,7 +65,7 @@ private:
 
     int myWidth;
     QColor myColor;
-
+    bool whiteBackground;
     QImage img;
     QPoint lastPoint;
     bool colorPicker; // TODO: uvesto vektor bool-a
