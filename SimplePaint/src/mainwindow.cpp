@@ -3,7 +3,8 @@
 #include <QDebug>
 #include "ui_mainwindow.h"
 #include "headers/mainwindow.h"
-#include "headers/image.h"
+
+//#include "headers/image.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
