@@ -9,16 +9,12 @@
 #include <QDebug>
 #include <QColor>
 #include <QPoint>
-#include <QWidget>
 #include <QMouseEvent>
-#include <QPainter>
+#include <QWidget>
 
-//#include "headers/mainwindow.h"
+#include "qpainter.h"
 
-// Forward declaration
-class MainWindow;
 
-template<typename T = MainWindow>
 class image: public QWidget {
 public:
 
@@ -50,7 +46,6 @@ public:
 public slots:
     void clearImage();
 
-
 protected:
     void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
@@ -59,10 +54,10 @@ protected:
     void paintEvent(QPaintEvent *event) override;
     void resizeEvent(QResizeEvent *event) override;
 
+private:
     void drawLineTo(const QPoint &endPoint);
     void resizeImage(QImage *img, const QSize &newSize);
 
-private:
     // saved after a change?
     bool modified;
     bool drawing;

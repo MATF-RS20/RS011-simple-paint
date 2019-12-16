@@ -11,7 +11,6 @@
 #include <QString>
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QMouseEvent>
 #include <QFormLayout>
 #include <QDialog>
 #include <QLineEdit>
@@ -26,11 +25,7 @@
 #include <QSize>
 #include <QCloseEvent>
 
-#include <QPixmap>
-#include "qpainter.h"
-#include "headers/image.h"
-
-//class image;
+class image;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -57,7 +52,7 @@ private:
     QColor color;
     QString path;
     int reserved_place;
-    image<> *scribbleArea;
+    image *scribbleArea;
 
 protected:
     //void openImage(QString filename);
