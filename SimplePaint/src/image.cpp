@@ -9,6 +9,7 @@ image::image(QWidget *parent)
 
     modified = false;
     drawing = false;
+    colorPicker = false;
     myWidth = 2;
     myColor = Qt::black;
 }
@@ -40,6 +41,12 @@ void image::setPenColor(const QColor &newColor)
     myColor = newColor;
 }
 
+void image::setColorPicker()
+{
+    colorPicker = true;
+    drawing = false;
+}
+
 // Color the image area with white
 void image::clearImage()
 {
@@ -50,7 +57,7 @@ void image::clearImage()
 
 void image::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton && !colorPicker) {
         lastPoint = event->pos();
         drawing = true;
     }
@@ -68,6 +75,12 @@ void image::mouseReleaseEvent(QMouseEvent *event)
     if (event->button() == Qt::LeftButton && drawing) {
         drawLineTo(event->pos());
         drawing = false;
+    }
+    else if (colorPicker){
+        QColor pickedColor = img.pixelColor(event->pos());
+        setPenColor(pickedColor);
+        colorPicker = false;
+        drawing = true;
     }
 }
 

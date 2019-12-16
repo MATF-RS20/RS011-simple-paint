@@ -43,6 +43,7 @@ private slots:
     void on_actionClose_triggered();
     void on_actionOpen_triggered();
     void on_actionColor_Pallete_triggered();
+    void on_actionColorPicker_triggered();
 
     void closeEvent(QCloseEvent*) override;
 

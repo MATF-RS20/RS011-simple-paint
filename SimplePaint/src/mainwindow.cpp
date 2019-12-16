@@ -66,6 +66,10 @@ void MainWindow::on_actionColor_Pallete_triggered() {
     scribbleArea->setPenColor(color);
 }
 
+void MainWindow::on_actionColorPicker_triggered() {
+    scribbleArea->setColorPicker();
+}
+
 /* Premesteno u klasu:
 void MainWindow::openImage(QString filename){
 

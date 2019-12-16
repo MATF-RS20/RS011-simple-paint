@@ -29,6 +29,7 @@ public:
 
     bool openImage(const QString &fileName);
     void setPenColor(const QColor &newColor);
+    void setColorPicker();
     // bool saveImage(const QString &fileName, const char *fileFormat);
 
     // the image was modified
@@ -60,13 +61,14 @@ private:
 
     // saved after a change?
     bool modified;
-    bool drawing;
+    bool drawing; // TODO: uvesto vektor bool-a
 
     int myWidth;
     QColor myColor;
 
     QImage img;
     QPoint lastPoint;
+    bool colorPicker; // TODO: uvesto vektor bool-a
 };
 
 #endif // IMAGE_H
