@@ -39,7 +39,8 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
-    void setColor(QColor col);
+signals:
+    void colorChanged();
 
 private slots:
     void on_actionClose_triggered();
@@ -52,10 +53,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    QColor color;
     QString path;
     image *scribbleArea;
-    int reserved_place;
 protected:
 
 };

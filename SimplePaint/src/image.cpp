@@ -2,18 +2,19 @@
 #include "./headers/image.h"
 
 image::image(QWidget *parent)
-    : QWidget(parent),
-      modified(false),
-      drawing(false),
-      whiteBackground(true),
-      myColor(Qt::black)
+    : QWidget(parent)
+    , modified(false)
+    , drawing(false)
+    , whiteBackground(true)
+    , colorPicker(false)
+    , myWidth(2)
+    , myColor(Qt::black)
 {
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
 
+
     // TODO: hijerarhija klasa
-    colorPicker = false;
-    myWidth = 2;
 }
 
 image::~image(){}
@@ -36,9 +37,10 @@ bool image::openImage(const QString &fileName)
     return true;
 }
 
-void image::setPenColor(const QColor &newColor)
+void image::setPenColor()
 {
-    myColor = newColor;
+    myColor = QColorDialog::getColor(myColor);
+
 }
 
 void image::setColorPicker()
@@ -79,8 +81,7 @@ void image::mouseReleaseEvent(QMouseEvent *event)
     }
     else if (colorPicker)
     {
-        QColor pickedColor = img.pixelColor(event->pos());
-        setPenColor(pickedColor);
+        myColor = img.pixelColor(event->pos());
 
         colorPicker = false;
         drawing = true;

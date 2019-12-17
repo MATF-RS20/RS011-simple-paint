@@ -11,22 +11,26 @@
 #include <QPoint>
 #include <QMouseEvent>
 #include <QWidget>
+#include <QColorDialog>
 
 #include "qpainter.h"
 
 
 class image: public QWidget {
+
+    //Q_OBJECT
+
 public:
 
-    image(QWidget *parent = 0);
-    ~image();
+    image(QWidget *parent = nullptr);
+    ~image() override;
 
     //TODO:
     //predlazem da dodamo slider-e, pa i ako doda neko vecu sliku, videce se cela, samo ce
     //morati da pomera slider da gleda dalje
 
     bool openImage(const QString &fileName);
-    void setPenColor(const QColor &newColor);
+
     void setColorPicker();
     // bool saveImage(const QString &fileName, const char *fileFormat);
 
@@ -47,6 +51,7 @@ public:
 
 public slots:
     void clearImage();
+    void setPenColor();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

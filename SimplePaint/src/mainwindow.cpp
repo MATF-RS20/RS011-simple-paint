@@ -8,17 +8,19 @@
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
-    , ui(new Ui::MainWindow),
-      color(Qt::black),
-      path(QDir::home().path() + "/Pictures")
+    , ui(new Ui::MainWindow)
+    , path(QDir::home().path() + "/Pictures")
+    , scribbleArea(new image)
 {
     ui->setupUi(this);
     QWidget::showMaximized();
-
-    scribbleArea = new image;                // postavljanje centralnog widget-a
+    // postavljamo centralni widget
     setCentralWidget(scribbleArea);
 
-    //reserved_place = 50;
+    QObject::connect(this,
+                     &MainWindow::colorChanged,
+                     scribbleArea,
+                     &image::setPenColor);
 }
 
 MainWindow::~MainWindow()
@@ -26,10 +28,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::setColor(QColor col)
-{
-    color = col;
-}
 
 void MainWindow::on_actionClose_triggered()
 {
@@ -44,8 +42,7 @@ void MainWindow::on_actionClose_triggered()
 }
 
 void MainWindow::closeEvent(QCloseEvent* event)
-{
-    emit MainWindow::on_actionClose_triggered();
+{   emit ui->actionClose->triggered();
     event->ignore();
 }
 
@@ -68,8 +65,7 @@ void MainWindow::on_actionOpen_triggered()
 
 void MainWindow::on_actionColor_Pallete_triggered()
 {
-    color = QColorDialog::getColor(color);
-    scribbleArea->setPenColor(color);
+    emit colorChanged();
 }
 
 void MainWindow::on_actionColorPicker_triggered()
@@ -98,4 +94,5 @@ void MainWindow::openImage(QString filename){
     centralWidget()->update();
 }
 */
+
 
