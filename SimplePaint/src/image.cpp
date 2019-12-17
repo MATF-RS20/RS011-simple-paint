@@ -5,13 +5,13 @@ image::image(QWidget *parent)
     : QWidget(parent),
       modified(false),
       drawing(false),
-      myColor(Qt::black),
-      whiteBackground(true)
+      whiteBackground(true),
+      myColor(Qt::black)
 {
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
 
-    // TODO
+    // TODO: hijerarhija klasa
     colorPicker = false;
     myWidth = 2;
 }
@@ -57,7 +57,8 @@ void image::clearImage()
 
 void image::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && !colorPicker) {
+    if (event->button() == Qt::LeftButton && !colorPicker)
+    {
         lastPoint = event->pos();
         drawing = true;
     }
@@ -69,26 +70,25 @@ void image::mouseMoveEvent(QMouseEvent *event)
         drawLineTo(event->pos());
 }
 
-// stop drawing
 void image::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && drawing) {
+    if (event->button() == Qt::LeftButton && drawing)
+    {
         drawLineTo(event->pos());
         drawing = false;
     }
-    else if (colorPicker){
-        std::cout << myColor.name().toStdString() << std::endl;
-
+    else if (colorPicker)
+    {
         QColor pickedColor = img.pixelColor(event->pos());
         setPenColor(pickedColor);
 
-        std::cout << myColor.name().toStdString() << std::endl;
         colorPicker = false;
         drawing = true;
     }
 }
 
-void image::paintEvent(QPaintEvent *event){
+void image::paintEvent(QPaintEvent *event)
+{
     QPainter painter(this);
     QRect dirtyRect = event->rect();
 
@@ -98,7 +98,8 @@ void image::paintEvent(QPaintEvent *event){
 // TODO: ne radi bas kako treba, i treba slider
 void image::resizeEvent(QResizeEvent *event)
 {
-    if ((width() > img.width() || height() > img.height()) && whiteBackground) {
+    if ((width() > img.width() || height() > img.height()) && whiteBackground)
+    {
         int newWidth = qMax(width()-20, img.width());
         int newHeight = qMax(height() + 120, img.height());
         resizeImage(&img, QSize(newWidth, newHeight));
@@ -127,7 +128,10 @@ void image::drawLineTo(const QPoint &endPoint)
 {
     QPainter painter(&img);
 
-    painter.setPen(QPen(myColor, myWidth, Qt::SolidLine, Qt::RoundCap,
+    painter.setPen(QPen(myColor,
+                        myWidth,
+                        Qt::SolidLine,
+                        Qt::RoundCap,
                         Qt::RoundJoin));
 
     painter.drawLine(lastPoint, endPoint);

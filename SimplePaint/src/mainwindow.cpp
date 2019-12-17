@@ -15,57 +15,65 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     QWidget::showMaximized();
 
-    reserved_place = 50;
-
-    // postavljanje centralnog widget-a
-    scribbleArea = new image;
+    scribbleArea = new image;                // postavljanje centralnog widget-a
     setCentralWidget(scribbleArea);
+
+    //reserved_place = 50;
 }
 
-MainWindow::~MainWindow(){
+MainWindow::~MainWindow()
+{
     delete ui;
 }
 
-void MainWindow::on_actionClose_triggered(){
+void MainWindow::setColor(QColor col)
+{
+    color = col;
+}
+
+void MainWindow::on_actionClose_triggered()
+{
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Warning", "The document has been modified.\nDo you want to save changes or discard them?",
                                   QMessageBox::Save  | QMessageBox::Discard | QMessageBox::Cancel );
-    if (reply == QMessageBox::Discard) {
+    if (reply == QMessageBox::Discard)
         QApplication::quit();
-    }
     else if (reply == QMessageBox::Save){
         //TODO sacuvati
     }
 }
 
-void MainWindow::closeEvent(QCloseEvent* event){
+void MainWindow::closeEvent(QCloseEvent* event)
+{
     emit MainWindow::on_actionClose_triggered();
     event->ignore();
 }
 
-void MainWindow::on_actionOpen_triggered(){
+void MainWindow::on_actionOpen_triggered()
+{
     QString fileName = QFileDialog::getOpenFileName(this,
             tr("Open Picture"),
             path,
             tr("Image Files (*.png *.jpg *.jpeg)")
            );
 
-    if(!fileName.isEmpty() && !fileName.isNull()){
-        qDebug() << "File: " << fileName;
+    if(!fileName.isEmpty() && !fileName.isNull())
+    {
         auto index_of_slash = fileName.lastIndexOf("/");
 
         MainWindow::path = fileName.chopped(fileName.size() - index_of_slash);
-
         scribbleArea->openImage(fileName);
     }
 }
 
-void MainWindow::on_actionColor_Pallete_triggered() {
+void MainWindow::on_actionColor_Pallete_triggered()
+{
     color = QColorDialog::getColor(color);
     scribbleArea->setPenColor(color);
 }
 
-void MainWindow::on_actionColorPicker_triggered() {
+void MainWindow::on_actionColorPicker_triggered()
+{
     scribbleArea->setColorPicker();
 }
 

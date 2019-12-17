@@ -24,23 +24,24 @@ public:
     //TODO:
     //predlazem da dodamo slider-e, pa i ako doda neko vecu sliku, videce se cela, samo ce
     //morati da pomera slider da gleda dalje
-    //reserved_places dodat jer racuna velicinu celog prostora, a mi ga spustamo zatim i pomeramo udesno,
-    //pa cisto da budemo da za sada sigurno staje u ceo prozor slika
 
     bool openImage(const QString &fileName);
     void setPenColor(const QColor &newColor);
     void setColorPicker();
     // bool saveImage(const QString &fileName, const char *fileFormat);
 
-    // the image was modified
-    bool isModified() const {
+    // the image was modified?
+    bool isModified() const
+    {
         return modified;
     }
 
-    QColor penColor() const {
+    QColor penColor() const
+    {
         return myColor;
     }
-    QImage getImage() const {
+    QImage getImage() const
+    {
         return img;
     }
 
@@ -59,16 +60,17 @@ private:
     void drawLineTo(const QPoint &endPoint);
     void resizeImage(QImage *img, const QSize &newSize);
 
-    // saved after a change?
-    bool modified;
-    bool drawing; // TODO: uvesto vektor bool-a
+    bool modified;                 // saved after a change?
+    bool drawing;                  // currently drawing?
+    bool whiteBackground;         //initial background
+    // TODO: uvesti mapi ili hijerarhiju klasa za alatke
+    bool colorPicker;
 
     int myWidth;
+
     QColor myColor;
-    bool whiteBackground;
     QImage img;
     QPoint lastPoint;
-    bool colorPicker; // TODO: uvesto vektor bool-a
 };
 
 #endif // IMAGE_H
