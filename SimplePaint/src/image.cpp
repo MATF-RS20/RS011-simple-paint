@@ -39,8 +39,8 @@ bool image::openImage(const QString &fileName)
 
 void image::setPenColor()
 {
-    myColor = QColorDialog::getColor(myColor);
-
+     auto answer =  QColorDialog::getColor(myColor);
+     myColor = answer.isValid() ? answer : myColor;
 }
 
 void image::setColorPicker()
