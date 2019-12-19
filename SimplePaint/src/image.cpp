@@ -152,7 +152,6 @@ void image::drawLineTo(const QPoint &endPoint)
     painter.drawLine(lastPoint, endPoint);
 
     modified = true;
-    std::cout << modified << std::endl;
     int rad = (myWidth / 2) + 2;
 
     update(QRect(lastPoint, endPoint).normalized()
