@@ -13,8 +13,6 @@ image::image(QWidget *parent)
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
 
-
-    // TODO: hijerarhija klasa
 }
 
 image::~image(){}
@@ -44,7 +42,7 @@ bool image::saveImage(const QString &filename, const char *fileFormat)
 
     if (imageToSave.save(filename, fileFormat))
     {
-        modified = false;                         // saved
+        modified = false;
         return true;
     } else {
         return false;
@@ -110,7 +108,7 @@ void image::paintEvent(QPaintEvent *event)
     painter.drawImage(dirtyRect, img, dirtyRect);
 }
 
-// TODO: ne radi bas kako treba, i treba slider
+// TODO: ne radi bas kako treba, treba slider
 void image::resizeEvent(QResizeEvent *event)
 {
     if ((width() > img.width() || height() > img.height()) && whiteBackground)

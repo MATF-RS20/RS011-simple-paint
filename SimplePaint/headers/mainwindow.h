@@ -41,6 +41,9 @@ public:
 
 signals:
     void colorChanged();
+    void needToSave(QString filename, const char* fileFormat);
+    void needToOpenImg(const QString &filename);
+
 
 private slots:
     void on_actionClose_triggered();

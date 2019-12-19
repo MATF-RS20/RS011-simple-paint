@@ -21,6 +21,17 @@ MainWindow::MainWindow(QWidget *parent)
                      &MainWindow::colorChanged,
                      scribbleArea,
                      &image::setPenColor);
+
+    QObject::connect(this,
+                     &MainWindow::needToSave,
+                     scribbleArea,
+                     &image::saveImage);
+
+    QObject::connect(this,
+                     &MainWindow::needToOpenImg,
+                     scribbleArea,
+                     &image::openImage);
+
 }
 
 MainWindow::~MainWindow()
@@ -59,7 +70,7 @@ void MainWindow::on_actionOpen_triggered()
         auto index_of_slash = fileName.lastIndexOf("/");
 
         MainWindow::path = fileName.chopped(fileName.size() - index_of_slash);
-        scribbleArea->openImage(fileName);
+        emit needToOpenImg(fileName);
     }
 }
 
@@ -77,7 +88,8 @@ void MainWindow::on_actionSave_as_triggered()
 
     if (filename.isEmpty())
             return;
-    scribbleArea->saveImage(filename, fileFormat.constData());
+
+    emit needToSave(filename, fileFormat.constData());
 }
 
 void MainWindow::on_actionColor_Pallete_triggered()
@@ -89,28 +101,4 @@ void MainWindow::on_actionColorPicker_triggered()
 {
     scribbleArea->setColorPicker();
 }
-
-
-/* Premesteno u klasu:
-void MainWindow::openImage(QString filename){
-
-    QImage img(filename);
-    QPixmap pm = QPixmap::fromImage(img);
-
-    QSize size = this->size(); // velicina naseg prozora (mainwindow)
-    auto height = (size.height()-MainWindow::reserved_place)/(pm.height()*1.0);
-    auto width  = (size.width()-MainWindow::reserved_place)/(pm.width()*1.0);
-
-    auto factor = std::min(height, width);
-    qDebug() << factor;
-
-    pm.scaledToWidth(static_cast<int>(width*factor));
-
-    ui->centralwidget->setGeometry(10, 10,
-                                 static_cast<int>(pm.width()*factor),
-                                 static_cast<int>(pm.height()*factor));
-    centralWidget()->update();
-}
-*/
-
 
