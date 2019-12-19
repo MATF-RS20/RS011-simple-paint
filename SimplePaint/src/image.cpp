@@ -37,6 +37,20 @@ bool image::openImage(const QString &fileName)
     return true;
 }
 
+bool image::saveImage(const QString &filename, const char *fileFormat)
+{
+    QImage imageToSave = img;
+        resizeImage(&imageToSave, img.size());
+
+    if (imageToSave.save(filename, fileFormat))
+    {
+        modified = false;                         // saved
+        return true;
+    } else {
+        return false;
+    }
+}
+
 void image::setPenColor()
 {
      auto answer =  QColorDialog::getColor(myColor);
@@ -138,6 +152,7 @@ void image::drawLineTo(const QPoint &endPoint)
     painter.drawLine(lastPoint, endPoint);
 
     modified = true;
+    std::cout << modified << std::endl;
     int rad = (myWidth / 2) + 2;
 
     update(QRect(lastPoint, endPoint).normalized()

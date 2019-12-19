@@ -63,6 +63,23 @@ void MainWindow::on_actionOpen_triggered()
     }
 }
 
+void MainWindow::on_actionSave_as_triggered()
+{
+    QByteArray fileFormat = "png";
+
+    QString initialPath = MainWindow::path + "/untitled." + fileFormat;
+
+    QString filename = QFileDialog::getSaveFileName(this, tr("Save As"),
+                                   initialPath,
+                                   tr("%1 Files (*.%2);;All Files (*)")
+                                   .arg(QString::fromLatin1(fileFormat.toUpper()))
+                                   .arg(QString::fromLatin1(fileFormat)));
+
+    if (filename.isEmpty())
+            return;
+    scribbleArea->saveImage(filename, fileFormat.constData());
+}
+
 void MainWindow::on_actionColor_Pallete_triggered()
 {
     emit colorChanged();
@@ -72,6 +89,7 @@ void MainWindow::on_actionColorPicker_triggered()
 {
     scribbleArea->setColorPicker();
 }
+
 
 /* Premesteno u klasu:
 void MainWindow::openImage(QString filename){

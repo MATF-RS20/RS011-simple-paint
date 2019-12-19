@@ -30,10 +30,9 @@ public:
     //morati da pomera slider da gleda dalje
 
     bool openImage(const QString &fileName);
+    bool saveImage(const QString &filename, const char *fileFormat);
 
-    void setColorPicker();
-    // bool saveImage(const QString &fileName, const char *fileFormat);
-
+    void setColorPicker();    
     // the image was modified?
     bool isModified() const
     {

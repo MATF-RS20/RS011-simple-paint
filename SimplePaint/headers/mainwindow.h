@@ -45,6 +45,8 @@ signals:
 private slots:
     void on_actionClose_triggered();
     void on_actionOpen_triggered();
+    void on_actionSave_as_triggered();
+
     void on_actionColor_Pallete_triggered();
     void on_actionColorPicker_triggered();
 
