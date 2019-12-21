@@ -22,8 +22,8 @@ image::image(QWidget *parent)
 
 
    // QObject::connect(this,
-     //                &MainWindow::colorChanged,
-    //                 scribbleArea,
+   //                  &MainWindow::colorChanged,
+   //                  scribbleArea,
    //                  &image::setPenColor);
 }
 
@@ -84,16 +84,19 @@ void image::clearImage()
 void image::mousePressEvent(QMouseEvent *event)
 {
     tool->mouseClicked(event);
+    update();
 }
 
 void image::mouseMoveEvent(QMouseEvent *event)
 {
     tool->mouseMoved(event);
+    update();
 }
 
 void image::mouseReleaseEvent(QMouseEvent *event)
 {
     tool->mouseReleased(event);
+    update();
 }
 
 void image::paintEvent(QPaintEvent *event)

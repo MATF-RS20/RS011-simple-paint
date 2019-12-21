@@ -22,9 +22,9 @@ public:
     virtual void mouseMoved(QMouseEvent*) = 0;
     virtual void mouseReleased(QMouseEvent*) = 0;
 
-    void setColor(QColor color);
     QColor getColor() const;
 
+    void setColor(QColor color);
     void setWidth(const int width);
 signals:
     virtual void updateRect(QRect);
