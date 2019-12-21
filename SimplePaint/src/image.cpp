@@ -10,9 +10,21 @@ image::image(QWidget *parent)
     , myWidth(2)
     , myColor(Qt::black)
 {
+    tool = new Pencil(myColor, myWidth, &img);
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
 
+    QObject::connect(tool,
+                     SIGNAL(updateRect),
+                     this,
+                     SLOT(&image::update)
+                     );
+
+
+   // QObject::connect(this,
+     //                &MainWindow::colorChanged,
+    //                 scribbleArea,
+   //                  &image::setPenColor);
 }
 
 image::~image(){}
@@ -71,37 +83,21 @@ void image::clearImage()
 
 void image::mousePressEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && !colorPicker)
-    {
-        lastPoint = event->pos();
-        drawing = true;
-    }
+    tool->mouseClicked(event);
 }
 
 void image::mouseMoveEvent(QMouseEvent *event)
 {
-    if ((event->buttons() & Qt::LeftButton) && drawing)
-        drawLineTo(event->pos());
+    tool->mouseMoved(event);
 }
 
 void image::mouseReleaseEvent(QMouseEvent *event)
 {
-    if (event->button() == Qt::LeftButton && drawing)
-    {
-        drawLineTo(event->pos());
-        drawing = false;
-    }
-    else if (colorPicker)
-    {
-        myColor = img.pixelColor(event->pos());
-
-        colorPicker = false;
-        drawing = true;
-    }
+    tool->mouseReleased(event);
 }
 
 void image::paintEvent(QPaintEvent *event)
-{
+{   std::cout << "Paint event" << std::endl;
     QPainter painter(this);
     QRect dirtyRect = event->rect();
 
@@ -139,7 +135,7 @@ void image::resizeImage(QImage *img, const QSize &newSize)
 
 void image::drawLineTo(const QPoint &endPoint)
 {
-    QPainter painter(&img);
+   /* QPainter painter(&img);
 
     painter.setPen(QPen(myColor,
                         myWidth,
@@ -154,7 +150,7 @@ void image::drawLineTo(const QPoint &endPoint)
 
     update(QRect(lastPoint, endPoint).normalized()
                                      .adjusted(-rad, -rad, +rad, +rad));
-    lastPoint = endPoint;
+    lastPoint = endPoint;*/
 }
 
 

@@ -102,3 +102,5 @@ void MainWindow::on_actionColorPicker_triggered()
     scribbleArea->setColorPicker();
 }
 
+
+
