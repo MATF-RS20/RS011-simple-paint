@@ -16,6 +16,7 @@
 
 #include "headers/tool.h"
 #include "headers/pencil.h"
+#include "headers/eraser.h"
 
 
 #include "qpainter.h"
@@ -80,7 +81,7 @@ private:
     QColor myColor;
     QImage img;
     QPoint lastPoint;
-    Pencil *tool;
+    Eraser *tool;
 };
 
 #endif // IMAGE_H

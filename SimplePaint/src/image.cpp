@@ -10,7 +10,7 @@ image::image(QWidget *parent)
     , myWidth(2)
     , myColor(Qt::black)
 {
-    tool = new Pencil(myColor, myWidth, &img);
+    tool = new Eraser(Qt::white, 6, &img);
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
 

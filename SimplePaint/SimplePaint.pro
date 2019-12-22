@@ -29,13 +29,15 @@ SOURCES += \
     ./src/mainwindow.cpp \
     ./src/image.cpp \
     ./src/tool.cpp \
-    ./src/pencil.cpp
+    ./src/pencil.cpp \
+    src/eraser.cpp
 
 HEADERS += \
     ./headers/mainwindow.h \
     ./headers/image.h \ \
     ./headers/tool.h \
-    ./headers/pencil.h
+    ./headers/pencil.h \
+    headers/eraser.h
 
 FORMS += \
     ./forms/mainwindow.ui
