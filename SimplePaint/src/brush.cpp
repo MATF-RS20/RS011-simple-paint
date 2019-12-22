@@ -2,7 +2,7 @@
 #include "headers/brush.h"
 
 
-Brush::Brush(QColor color, int width, QImage* img)
+Brush::Brush(QColor* color, int width, QImage* img)
     :Tool::Tool(color, width, img)
 {}
 
@@ -29,11 +29,6 @@ void Brush::mouseReleased(QMouseEvent *event){
 }
 
 
-void Brush::setColor(QColor color) {
-    myColor = color;
-}
-
-
 void Brush::setWidth(const int width) {
     myWidth = width;
 }
@@ -41,11 +36,11 @@ void Brush::setWidth(const int width) {
 void Brush::paint(QPoint endPoint){
 
     QPainter painter(image);
-    painter.setPen(QPen(myColor,
+    painter.setPen(QPen(*myColor,
                         myWidth,
                         Qt::SolidLine,
-                        Qt::FlatCap,
-                        Qt::MiterJoin));
+                        Qt::RoundCap,
+                        Qt::RoundJoin));
 
     painter.drawLine(lastPoint, endPoint);
 

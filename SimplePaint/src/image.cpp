@@ -6,13 +6,14 @@ image::image(QWidget *parent)
     , modified(false)
     , whiteBackground(true)
     , myWidth(2)
-    , myColor(Qt::black)
+    , primaryColor(Qt::black)
+    , secondaryColor(Qt::white)
 {
 
-    allTools.insert(std::pair<QString, Tool*>("pencil", new Pencil(myColor, myWidth, &img)));
-    allTools.insert(std::pair<QString, Tool*>("eraser", new Eraser(Qt::white, 6, &img)));
-    allTools.insert(std::pair<QString, Tool*>("colorpicker", new ColorPicker(&img)));
-    allTools.insert(std::pair<QString, Tool*>("brush", new Brush(myColor, 5, &img)));
+    allTools.insert(std::pair<QString, Tool*>("pencil", new Pencil(&primaryColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("eraser", new Eraser(&secondaryColor, 6, &img)));
+    allTools.insert(std::pair<QString, Tool*>("colorpicker", new ColorPicker(&primaryColor, &secondaryColor, &img)));
+    allTools.insert(std::pair<QString, Tool*>("brush", new Brush(&primaryColor, 5, &img)));
 
     // initial tool
     tool = allTools.at("pencil");
@@ -65,9 +66,8 @@ bool image::saveImage(const QString &filename, const char *fileFormat)
 
 void image::setPenColor()
 {
-     auto answer =  QColorDialog::getColor(myColor);
-     myColor = answer.isValid() ? answer : myColor;
-     tool->setColor(myColor);
+     auto answer =  QColorDialog::getColor(primaryColor);
+     primaryColor = answer.isValid() ? answer : primaryColor;
 }
 
 
@@ -94,7 +94,6 @@ void image::mouseMoveEvent(QMouseEvent *event)
 void image::mouseReleaseEvent(QMouseEvent *event)
 {
     tool->mouseReleased(event);
-    myColor = tool->getColor();
     update();
 }
 

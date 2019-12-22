@@ -7,7 +7,7 @@ class Brush : public Tool
 {
     Q_OBJECT
 public:
-    Brush(QColor, int, QImage*);
+    Brush(QColor*, int, QImage*);
 
     ~Brush() override;
 
@@ -16,9 +16,6 @@ public:
     void mouseClicked(QMouseEvent *) override;
     void mouseReleased(QMouseEvent *) override;
 
-    QColor getColor() const override { return myColor; }
-
-    void setColor(QColor color) override;
     void setWidth(const int width) override;
 
 signals:

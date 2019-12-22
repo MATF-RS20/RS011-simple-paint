@@ -2,7 +2,7 @@
 #include "headers/pencil.h"
 
 
-Pencil::Pencil(QColor color, int width, QImage* img)
+Pencil::Pencil(QColor* color, int width, QImage* img)
     :Tool::Tool(color, width, img)
 {}
 
@@ -28,12 +28,6 @@ void Pencil::mouseReleased(QMouseEvent *event){
     }
 }
 
-
-void Pencil::setColor(QColor color) {
-    myColor = color;
-}
-
-
 void Pencil::setWidth(const int width) {
     myWidth = width;
 }
@@ -41,7 +35,7 @@ void Pencil::setWidth(const int width) {
 void Pencil::paint(QPoint endPoint){
 
     QPainter painter(image);
-    painter.setPen(QPen(myColor,
+    painter.setPen(QPen(*myColor,
                         myWidth,
                         Qt::SolidLine,
                         Qt::RoundCap,

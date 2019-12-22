@@ -1,7 +1,7 @@
 #include <iostream>
 #include "headers/eraser.h"
 
-Eraser::Eraser(QColor color, int width, QImage* img)
+Eraser::Eraser(QColor* color, int width, QImage* img)
     : Tool::Tool(color, width,img)
 {}
 
@@ -27,10 +27,6 @@ void Eraser::mouseReleased(QMouseEvent *event){
     }
 }
 
-void Eraser::setColor(const QColor color) {
-    myColor = color;
-}
-
 void Eraser::setWidth(const int width) {
     myWidth = width;
 }
@@ -40,7 +36,7 @@ void Eraser::paint(QPoint endPoint){
 
     QPainter painter(image);
 
-    painter.setPen(QPen(myColor,
+    painter.setPen(QPen(*myColor,
                         myWidth,
                         Qt::SolidLine,
                         Qt::RoundCap,

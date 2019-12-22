@@ -30,7 +30,7 @@ public:
 
     // the image was modified?
     bool isModified() const { return modified; }
-    QColor penColor() const { return myColor; }
+    QColor penColor() const { return primaryColor; }
     QImage getImage() const { return img; }
 
 public slots:
@@ -58,7 +58,8 @@ private:
 
     int myWidth;
 
-    QColor myColor;
+    QColor primaryColor;
+    QColor secondaryColor;
     QImage img;
     QPoint lastPoint;
     Tool *tool;

@@ -7,7 +7,7 @@ class ColorPicker : public Tool
 {
     Q_OBJECT
 public:
-    ColorPicker(QImage* img);
+    ColorPicker(QColor* primary, QColor* secondary, QImage* img);
 
     ~ColorPicker() override;
 
@@ -16,16 +16,16 @@ public:
     void mouseClicked(QMouseEvent *) override;
     void mouseReleased(QMouseEvent *) override;
 
-    void setColor(QColor color) override;
     void setWidth(const int width) override;
-
-    QColor getColor() const override { return myColor; }
 
 signals:
     void updateRect(QRect) override;
 
 private:
     QPoint lastPoint;
+    void setColor(QColor color);
+    QColor *myPrimary, *mySecondary;
+    Qt::MouseButton pickerButton;
 };
 
 #endif // ERASER_H

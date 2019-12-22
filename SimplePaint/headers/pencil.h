@@ -7,7 +7,7 @@ class Pencil : public Tool
 {
     Q_OBJECT
 public:
-    Pencil(QColor, int, QImage*);
+    Pencil(QColor*, int, QImage*);
 
     ~Pencil() override;
 
@@ -16,9 +16,6 @@ public:
     void mouseClicked(QMouseEvent *) override;
     void mouseReleased(QMouseEvent *) override;
 
-    QColor getColor() const override { return myColor; }
-
-    void setColor(QColor color) override;
     void setWidth(const int width) override;
 
 signals:
