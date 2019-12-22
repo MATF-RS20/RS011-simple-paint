@@ -32,5 +32,8 @@
 *.app
 
 
+#.idea files
+*.idea
+
 # pro.user files
 *.pro.user*

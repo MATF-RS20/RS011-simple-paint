@@ -15,7 +15,7 @@ image::image(QWidget *parent)
     allTools.insert(std::pair<QString, Tool*>("brush", new Brush(myColor, 5, &img)));
 
     // initial tool
-    tool = (Pencil*) allTools.at("pencil");
+    tool = allTools.at("pencil");
 
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
