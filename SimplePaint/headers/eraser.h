@@ -16,6 +16,11 @@ public:
     void mouseClicked(QMouseEvent *) override;
     void mouseReleased(QMouseEvent *) override;
 
+    QColor getColor() const override { return myColor; }
+
+    void setWidth(const int width) override;
+    void setColor(const QColor) override;
+
 signals:
     void updateRect(QRect) override;
 

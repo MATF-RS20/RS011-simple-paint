@@ -1,16 +1,20 @@
 #include <QDebug>
-#include "./headers/image.h"
+#include "headers/image.h"
 
 image::image(QWidget *parent)
     : QWidget(parent)
     , modified(false)
-    , drawing(false)
     , whiteBackground(true)
-    , colorPicker(false)
     , myWidth(2)
     , myColor(Qt::black)
 {
-    tool = new Eraser(Qt::white, 6, &img);
+
+    allTools.insert(std::pair<QString, Tool*>("pencil", new Pencil(myColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("eraser", new Eraser(Qt::white, 6, &img)));
+    allTools.insert(std::pair<QString, Tool*>("colorpicker", new ColorPicker(&img)));
+
+    tool = (Pencil*) allTools.at("pencil");
+
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
 
@@ -21,10 +25,6 @@ image::image(QWidget *parent)
                      );
 
 
-   // QObject::connect(this,
-   //                  &MainWindow::colorChanged,
-   //                  scribbleArea,
-   //                  &image::setPenColor);
 }
 
 image::~image(){}
@@ -65,13 +65,9 @@ void image::setPenColor()
 {
      auto answer =  QColorDialog::getColor(myColor);
      myColor = answer.isValid() ? answer : myColor;
+     tool->setColor(myColor);
 }
 
-void image::setColorPicker()
-{
-    colorPicker = true;
-    drawing = false;
-}
 
 // Color the image area with white
 void image::clearImage()
@@ -96,18 +92,18 @@ void image::mouseMoveEvent(QMouseEvent *event)
 void image::mouseReleaseEvent(QMouseEvent *event)
 {
     tool->mouseReleased(event);
+    myColor = tool->getColor();
     update();
 }
 
 void image::paintEvent(QPaintEvent *event)
-{   std::cout << "Paint event" << std::endl;
+{
     QPainter painter(this);
     QRect dirtyRect = event->rect();
 
     painter.drawImage(dirtyRect, img, dirtyRect);
 }
 
-// TODO: ne radi bas kako treba, treba slider
 void image::resizeEvent(QResizeEvent *event)
 {
     if ((width() > img.width() || height() > img.height()) && whiteBackground)
@@ -136,25 +132,8 @@ void image::resizeImage(QImage *img, const QSize &newSize)
     *img = newImage;
 }
 
-void image::drawLineTo(const QPoint &endPoint)
+// TODO
+void image::setTool(QString& nameOfTool)
 {
-   /* QPainter painter(&img);
-
-    painter.setPen(QPen(myColor,
-                        myWidth,
-                        Qt::SolidLine,
-                        Qt::RoundCap,
-                        Qt::RoundJoin));
-
-    painter.drawLine(lastPoint, endPoint);
-
-    modified = true;
-    int rad = (myWidth / 2) + 2;
-
-    update(QRect(lastPoint, endPoint).normalized()
-                                     .adjusted(-rad, -rad, +rad, +rad));
-    lastPoint = endPoint;*/
+    tool = allTools.at(nameOfTool);
 }
-
-
-

@@ -28,10 +28,19 @@ void Pencil::mouseReleased(QMouseEvent *event){
     }
 }
 
+
+void Pencil::setColor(QColor color) {
+    myColor = color;
+}
+
+
+void Pencil::setWidth(const int width) {
+    myWidth = width;
+}
+
 void Pencil::paint(QPoint endPoint){
 
     QPainter painter(image);
-    std::cout << "Paint" << std::endl;
     painter.setPen(QPen(myColor,
                         myWidth,
                         Qt::SolidLine,

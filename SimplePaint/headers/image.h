@@ -14,41 +14,25 @@
 #include <QColorDialog>
 #include <QObject>
 
+#include "qpainter.h"
+
 #include "headers/tool.h"
 #include "headers/pencil.h"
 #include "headers/eraser.h"
-
-
-#include "qpainter.h"
-
+#include "headers/colorpicker.h"
 
 class image: public QWidget {
-
-//    Q_OBJECT
 
 public:
     image(QWidget *parent = nullptr);
     ~image() override;
 
-    //TODO:
-    //predlazem da dodamo slider-e, pa i ako doda neko vecu sliku, videce se cela, samo ce
-    //morati da pomera slider da gleda dalje
-
-    void setColorPicker();    
     // the image was modified?
-    bool isModified() const
-    {
-        return modified;
-    }
+    bool isModified() const { return modified; }
+    QColor penColor() const { return myColor; }
+    QImage getImage() const { return img; }
 
-    QColor penColor() const
-    {
-        return myColor;
-    }
-    QImage getImage() const
-    {
-        return img;
-    }
+    void setTool(QString &nameOfTool);
 
 public slots:
     void clearImage();
@@ -67,21 +51,19 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 
 private:
-    void drawLineTo(const QPoint &endPoint);
     void resizeImage(QImage *img, const QSize &newSize);
 
     bool modified;                 // saved after a change?
-    bool drawing;                  // currently drawing?
     bool whiteBackground;         //initial background
-    // TODO: uvesti mapi ili hijerarhiju klasa za alatke
-    bool colorPicker;
 
     int myWidth;
 
     QColor myColor;
     QImage img;
     QPoint lastPoint;
-    Eraser *tool;
+    Tool *tool;
+    std::map<QString, Tool*> allTools;
+
 };
 
 #endif // IMAGE_H

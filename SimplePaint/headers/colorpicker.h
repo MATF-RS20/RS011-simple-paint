@@ -1,25 +1,25 @@
-#ifndef PENCIL_H
-#define PENCIL_H
+#ifndef COLORPICKER_H
+#define COLORPICKER_H
 
 #include "headers/tool.h"
 
-class Pencil : public Tool
+class ColorPicker : public Tool
 {
     Q_OBJECT
 public:
-    Pencil(QColor, int, QImage*);
+    ColorPicker(QImage* img);
 
-    ~Pencil() override;
+    ~ColorPicker() override;
 
     void paint(QPoint) override;
     void mouseMoved(QMouseEvent *) override;
     void mouseClicked(QMouseEvent *) override;
     void mouseReleased(QMouseEvent *) override;
 
-    QColor getColor() const override { return myColor; }
-
     void setColor(QColor color) override;
     void setWidth(const int width) override;
+
+    QColor getColor() const override { return myColor; }
 
 signals:
     void updateRect(QRect) override;
@@ -28,4 +28,4 @@ private:
     QPoint lastPoint;
 };
 
-#endif // TOOL_H
+#endif // ERASER_H

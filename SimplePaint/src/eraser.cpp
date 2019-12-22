@@ -27,10 +27,19 @@ void Eraser::mouseReleased(QMouseEvent *event){
     }
 }
 
+void Eraser::setColor(const QColor color) {
+    myColor = color;
+}
+
+void Eraser::setWidth(const int width) {
+    myWidth = width;
+}
+
+
 void Eraser::paint(QPoint endPoint){
 
     QPainter painter(image);
-    std::cout << "Paint" << std::endl;
+
     painter.setPen(QPen(myColor,
                         myWidth,
                         Qt::SolidLine,

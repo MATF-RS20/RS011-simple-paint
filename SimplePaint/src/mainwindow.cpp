@@ -14,7 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     QWidget::showMaximized();
-    // postavljamo centralni widget
     setCentralWidget(scribbleArea);
 
     QObject::connect(this,
@@ -99,7 +98,7 @@ void MainWindow::on_actionColor_Pallete_triggered()
 
 void MainWindow::on_actionColorPicker_triggered()
 {
-    scribbleArea->setColorPicker();
+    //TODO
 }
 
 

@@ -22,10 +22,10 @@ public:
     virtual void mouseMoved(QMouseEvent*) = 0;
     virtual void mouseReleased(QMouseEvent*) = 0;
 
-    QColor getColor() const;
+    virtual QColor getColor() const = 0;
 
-    void setColor(QColor color);
-    void setWidth(const int width);
+    virtual void setColor(QColor color) = 0;
+    virtual void setWidth(const int width) = 0;
 signals:
     virtual void updateRect(QRect);
 
@@ -35,8 +35,8 @@ protected:
     int myWidth;
     QImage *image;
     bool modified = false;
-    Tool(const QColor, const int, QImage*);
 
+    Tool(const QColor, const int, QImage*);
     Tool(QImage*);
 
 private:

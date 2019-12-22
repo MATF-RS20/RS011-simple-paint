@@ -15,6 +15,9 @@ QMAKE_CXXFLAGS += -std=c++17
 # deprecated API in order to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
+# QMAKE_CXXFLAGS_WARN_OFF -= -Wunused-parameter
+
+
 # You can also make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
@@ -30,14 +33,16 @@ SOURCES += \
     ./src/image.cpp \
     ./src/tool.cpp \
     ./src/pencil.cpp \
-    src/eraser.cpp
+    ./src/eraser.cpp \
+    ./src/colorpicker.cpp
 
 HEADERS += \
     ./headers/mainwindow.h \
     ./headers/image.h \ \
     ./headers/tool.h \
     ./headers/pencil.h \
-    headers/eraser.h
+    ./headers/eraser.h \
+    ./headers/colorpicker.h
 
 FORMS += \
     ./forms/mainwindow.ui
