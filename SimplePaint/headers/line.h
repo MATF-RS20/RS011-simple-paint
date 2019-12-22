@@ -1,6 +1,10 @@
 #ifndef LINE_H
 #define LINE_H
 
+#include <QPainter>
+#include <QPen>
+#include <QBrush>
+#include <QDebug>
 #include "headers/tool.h"
 
 class Line : public Tool
@@ -23,8 +27,7 @@ signals:
 
 private:
     QPoint lastPoint;
-    int finalX;
-    int finalY;
+
 };
 
 

@@ -19,6 +19,7 @@ void Line::mouseMoved(QMouseEvent *event){
     //if (event->buttons() & Qt::LeftButton)
     //    paint(event->pos());
     event->ignore();
+
 }
 
 void Line::mouseReleased(QMouseEvent *event){
@@ -33,15 +34,18 @@ void Line::setWidth(const int width) {
     myWidth = width;
 }
 
-void Line::paint(QPoint endPoint){
-
+void Line::paint(QPoint endPoint)
+{
     QPainter painter(image);
+    painter.beginNativePainting();
+
     painter.setPen(QPen(*myColor,
                         myWidth,
                         Qt::SolidLine,
                         Qt::RoundCap,
                         Qt::RoundJoin));
-    painter.setRenderHint( QPainter::Antialiasing );
+
+    painter.setRenderHint(QPainter::Antialiasing);
     painter.drawLine(lastPoint, endPoint);
 
     modified = true;
@@ -50,7 +54,6 @@ void Line::paint(QPoint endPoint){
     emit updateRect(QRect(lastPoint, endPoint).normalized()
                     .adjusted(-rad, -rad, +rad, +rad));
 
-
-    //lastPoint = endPoint;
+    painter.endNativePainting();
 }
 

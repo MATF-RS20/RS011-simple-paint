@@ -38,10 +38,10 @@ void Pencil::paint(QPoint endPoint){
     painter.setPen(QPen(*myColor,
                         myWidth,
                         Qt::SolidLine,
-                        Qt::RoundCap,
-                        Qt::RoundJoin));
+                        Qt::SquareCap,
+                        Qt::MiterJoin));
 
-    painter.setRenderHint( QPainter::Antialiasing );
+    painter.setRenderHint(QPainter::Antialiasing);
     painter.drawLine(lastPoint, endPoint);
 
 

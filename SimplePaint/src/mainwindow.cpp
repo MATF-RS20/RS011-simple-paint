@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
                      &MainWindow::toolChanged,
                      scribbleArea,
                      &image::setTool);
+
+    qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
 }
 
 MainWindow::~MainWindow()

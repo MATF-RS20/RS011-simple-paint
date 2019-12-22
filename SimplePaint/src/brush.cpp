@@ -42,7 +42,7 @@ void Brush::paint(QPoint endPoint){
                         Qt::RoundCap,
                         Qt::RoundJoin));
 
-    painter.setRenderHint( QPainter::Antialiasing );
+    painter.setRenderHint(QPainter::Antialiasing);
     painter.drawLine(lastPoint, endPoint);
 
     modified = true;
