@@ -132,8 +132,7 @@ void image::resizeImage(QImage *img, const QSize &newSize)
     *img = newImage;
 }
 
-// TODO
-void image::setTool(QString& nameOfTool)
+void image::setTool(QString nameOfTool)
 {
     tool = allTools.at(nameOfTool);
 }

@@ -32,11 +32,10 @@ public:
     QColor penColor() const { return myColor; }
     QImage getImage() const { return img; }
 
-    void setTool(QString &nameOfTool);
-
 public slots:
     void clearImage();
     void setPenColor();
+    void setTool(QString nameOfTool);
 
     bool openImage(const QString &fileName);
     bool saveImage(const QString &filename, const char *fileFormat);

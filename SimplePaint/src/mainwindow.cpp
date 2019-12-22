@@ -31,6 +31,10 @@ MainWindow::MainWindow(QWidget *parent)
                      scribbleArea,
                      &image::openImage);
 
+    QObject::connect(this,
+                     &MainWindow::toolChanged,
+                     scribbleArea,
+                     &image::setTool);
 }
 
 MainWindow::~MainWindow()
@@ -98,7 +102,17 @@ void MainWindow::on_actionColor_Pallete_triggered()
 
 void MainWindow::on_actionColorPicker_triggered()
 {
-    //TODO
+    emit toolChanged("colorpicker");
+}
+
+void MainWindow::on_actionPencil_triggered()
+{
+    emit toolChanged("pencil");
+}
+
+void MainWindow::on_actionErase_triggered()
+{
+    emit toolChanged("eraser");
 }
 
 
