@@ -115,5 +115,10 @@ void MainWindow::on_actionErase_triggered()
     emit toolChanged("eraser");
 }
 
+void MainWindow::on_actionBrush_triggered()
+{
+    emit toolChanged("brush");
+}
+
 
 

@@ -12,7 +12,9 @@ image::image(QWidget *parent)
     allTools.insert(std::pair<QString, Tool*>("pencil", new Pencil(myColor, myWidth, &img)));
     allTools.insert(std::pair<QString, Tool*>("eraser", new Eraser(Qt::white, 6, &img)));
     allTools.insert(std::pair<QString, Tool*>("colorpicker", new ColorPicker(&img)));
+    allTools.insert(std::pair<QString, Tool*>("brush", new Brush(myColor, 5, &img)));
 
+    // initial tool
     tool = (Pencil*) allTools.at("pencil");
 
     // Roots the widget to the top left even if resized
@@ -27,7 +29,7 @@ image::image(QWidget *parent)
 
 }
 
-image::~image(){}
+image::~image() {}
 
 bool image::openImage(const QString &fileName)
 {

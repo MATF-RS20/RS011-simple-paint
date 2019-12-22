@@ -20,6 +20,7 @@
 #include "headers/pencil.h"
 #include "headers/eraser.h"
 #include "headers/colorpicker.h"
+#include "headers/brush.h"
 
 class image: public QWidget {
 

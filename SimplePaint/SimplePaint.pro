@@ -34,7 +34,8 @@ SOURCES += \
     ./src/tool.cpp \
     ./src/pencil.cpp \
     ./src/eraser.cpp \
-    ./src/colorpicker.cpp
+    ./src/colorpicker.cpp \
+    ./src/brush.cpp
 
 HEADERS += \
     ./headers/mainwindow.h \
@@ -42,7 +43,8 @@ HEADERS += \
     ./headers/tool.h \
     ./headers/pencil.h \
     ./headers/eraser.h \
-    ./headers/colorpicker.h
+    ./headers/colorpicker.h \
+    ./headers/brush.h
 
 FORMS += \
     ./forms/mainwindow.ui
