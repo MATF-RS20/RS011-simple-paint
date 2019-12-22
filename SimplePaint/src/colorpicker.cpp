@@ -26,9 +26,8 @@ void ColorPicker::setWidth(const int width) { return; }
 void ColorPicker::paint(QPoint endPoint){
 
     QPainter painter(image);
-    QColor pickedColor = image->pixelColor(endPoint);
 
     myColor = image->pixelColor(endPoint);
-    setColor(pickedColor);
+    setColor(myColor);
 }
 
