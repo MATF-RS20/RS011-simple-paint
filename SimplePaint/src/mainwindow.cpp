@@ -120,5 +120,11 @@ void MainWindow::on_actionBrush_triggered()
     emit toolChanged("brush");
 }
 
+void MainWindow::on_actionLine_triggered()
+{
+    std::cout << "Line picked" << std::endl;
+    emit toolChanged("line");
+}
+
 
 

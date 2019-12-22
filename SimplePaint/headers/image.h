@@ -21,6 +21,7 @@
 #include "headers/eraser.h"
 #include "headers/colorpicker.h"
 #include "headers/brush.h"
+#include "headers/line.h"
 
 class image: public QWidget {
 
@@ -64,7 +65,6 @@ private:
     QPoint lastPoint;
     Tool *tool;
     std::map<QString, Tool*> allTools;
-
 };
 
 #endif // IMAGE_H

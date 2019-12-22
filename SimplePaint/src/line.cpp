@@ -1,26 +1,27 @@
 #include <iostream>
-#include "headers/pencil.h"
+#include "headers/line.h"
 
 
-Pencil::Pencil(QColor* color, int width, QImage* img)
+Line::Line(QColor* color, int width, QImage* img)
     :Tool::Tool(color, width, img)
 {}
 
-Pencil::~Pencil(){}
+Line::~Line(){}
 
-void Pencil::mouseClicked(QMouseEvent *event){
+void Line::mouseClicked(QMouseEvent *event){
     if (event->button() == Qt::LeftButton)
     {
         lastPoint = event->pos();
     }
 }
 
-void Pencil::mouseMoved(QMouseEvent *event){
-    if (event->buttons() & Qt::LeftButton)
-        paint(event->pos());
+void Line::mouseMoved(QMouseEvent *event){
+    //if (event->buttons() & Qt::LeftButton)
+    //    paint(event->pos());
+    event->ignore();
 }
 
-void Pencil::mouseReleased(QMouseEvent *event){
+void Line::mouseReleased(QMouseEvent *event){
 
     if (event->button() == Qt::LeftButton)
     {
@@ -28,11 +29,11 @@ void Pencil::mouseReleased(QMouseEvent *event){
     }
 }
 
-void Pencil::setWidth(const int width) {
+void Line::setWidth(const int width) {
     myWidth = width;
 }
 
-void Pencil::paint(QPoint endPoint){
+void Line::paint(QPoint endPoint){
 
     QPainter painter(image);
     painter.setPen(QPen(*myColor,
@@ -40,18 +41,16 @@ void Pencil::paint(QPoint endPoint){
                         Qt::SolidLine,
                         Qt::RoundCap,
                         Qt::RoundJoin));
-
     painter.setRenderHint( QPainter::Antialiasing );
     painter.drawLine(lastPoint, endPoint);
-
 
     modified = true;
     int rad = (myWidth / 2) + 2;
 
     emit updateRect(QRect(lastPoint, endPoint).normalized()
-                                     .adjusted(-rad, -rad, +rad, +rad));
+                    .adjusted(-rad, -rad, +rad, +rad));
 
 
-    lastPoint = endPoint;
+    //lastPoint = endPoint;
 }
 
