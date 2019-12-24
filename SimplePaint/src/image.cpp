@@ -22,12 +22,6 @@ image::image(QWidget *parent)
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
 
-    QObject::connect(tool,
-                     SIGNAL(updateRect),
-                     this,
-                     SLOT(&image::update)
-                     );
-
 
 }
 

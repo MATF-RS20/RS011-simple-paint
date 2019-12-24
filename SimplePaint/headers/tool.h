@@ -23,8 +23,6 @@ public:
     virtual void mouseReleased(QMouseEvent*) = 0;
 
     virtual void setWidth(const int width) = 0;
-signals:
-    virtual void updateRect(QRect);
 
 protected:
     virtual void paint(QPoint) = 0;

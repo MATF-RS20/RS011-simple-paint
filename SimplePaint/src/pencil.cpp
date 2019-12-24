@@ -44,13 +44,7 @@ void Pencil::paint(QPoint endPoint){
     painter.setRenderHint(QPainter::Antialiasing);
     painter.drawLine(lastPoint, endPoint);
 
-
     modified = true;
-    int rad = (myWidth / 2) + 2;
-
-    emit updateRect(QRect(lastPoint, endPoint).normalized()
-                                     .adjusted(-rad, -rad, +rad, +rad));
-
 
     lastPoint = endPoint;
 }

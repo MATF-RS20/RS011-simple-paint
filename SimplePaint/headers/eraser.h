@@ -18,9 +18,6 @@ public:
 
     void setWidth(const int width) override;
 
-signals:
-    void updateRect(QRect) override;
-
 private:
     QPoint lastPoint;
 };
