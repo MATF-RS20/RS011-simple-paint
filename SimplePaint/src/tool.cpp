@@ -7,6 +7,12 @@ Tool::Tool(QColor* color, const int width, QImage* img)
     , image(img)
 {}
 
+Tool::Tool(QColor* color, QImage* img)
+    : QObject()
+    , myColor(color)
+    , image(img)
+{}
+
 Tool::Tool(QImage* img)
     : QObject()
     , myColor(nullptr)

@@ -54,6 +54,7 @@ private slots:
     void on_actionErase_triggered();
     void on_actionBrush_triggered();
     void on_actionLine_triggered();
+    void on_actionBucket_triggered();
 
     void on_actionColor_Pallete_triggered();
     void on_actionColorPicker_triggered();

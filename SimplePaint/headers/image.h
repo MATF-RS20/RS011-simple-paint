@@ -22,6 +22,7 @@
 #include "headers/colorpicker.h"
 #include "headers/brush.h"
 #include "headers/line.h"
+#include "headers/bucket.h"
 
 class image: public QWidget {
 

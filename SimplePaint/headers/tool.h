@@ -32,6 +32,7 @@ protected:
     bool modified = false;
 
     Tool(QColor*, const int, QImage*);
+    Tool(QColor*, QImage*);
     Tool(QImage*);
 
 private:
