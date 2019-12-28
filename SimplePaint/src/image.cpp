@@ -16,6 +16,8 @@ image::image(QWidget *parent)
     allTools.insert(std::pair<QString, Tool*>("brush", new Brush(&primaryColor, 5, &img)));
     allTools.insert(std::pair<QString, Tool*>("line", new Line(&primaryColor, myWidth, &img)));
     allTools.insert(std::pair<QString, Tool*>("bucket", new Bucket(&primaryColor, &img)));
+    allTools.insert(std::pair<QString, Tool*>("ellipse", new Ellipse(&primaryColor, 5, &img)));
+    allTools.insert(std::pair<QString, Tool*>("rect", new Rect(&primaryColor, 5, &img)));
 
     // initial tool
     tool = allTools.at("pencil");

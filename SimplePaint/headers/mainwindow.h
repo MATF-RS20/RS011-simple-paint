@@ -61,6 +61,10 @@ private slots:
 
     void closeEvent(QCloseEvent*) override;
 
+    void on_actionRectangle_triggered();
+
+    void on_actionEllipse_triggered();
+
 private:
     Ui::MainWindow *ui;
 

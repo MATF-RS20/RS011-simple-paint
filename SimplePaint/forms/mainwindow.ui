@@ -152,7 +152,7 @@
    <addaction name="actionLine"/>
    <addaction name="actionTriangle"/>
    <addaction name="actionRectangle"/>
-   <addaction name="actionElipse"/>
+   <addaction name="actionEllipse"/>
    <addaction name="separator"/>
    <addaction name="actionColor_Pallete"/>
   </widget>
@@ -356,7 +356,7 @@
     <string>Rectangle</string>
    </property>
   </action>
-  <action name="actionElipse">
+  <action name="actionEllipse">
    <property name="checkable">
     <bool>false</bool>
    </property>
@@ -365,10 +365,10 @@
      <normaloff>:/icons/icons/circle.png</normaloff>:/icons/icons/circle.png</iconset>
    </property>
    <property name="text">
-    <string>Elipse</string>
+    <string>Ellipse</string>
    </property>
    <property name="toolTip">
-    <string>Elipse</string>
+    <string>Ellipse</string>
    </property>
   </action>
   <action name="actionTheme">

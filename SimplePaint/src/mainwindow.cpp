@@ -134,3 +134,12 @@ void MainWindow::on_actionBucket_triggered()
 
 
 
+void MainWindow::on_actionRectangle_triggered()
+{
+    emit toolChanged("rect");
+}
+
+void MainWindow::on_actionEllipse_triggered()
+{
+    emit toolChanged("ellipse");
+}

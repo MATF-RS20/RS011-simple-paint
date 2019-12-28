@@ -23,6 +23,8 @@
 #include "headers/brush.h"
 #include "headers/line.h"
 #include "headers/bucket.h"
+#include "headers/ellipse.h"
+#include "headers/rect.h"
 
 class image: public QWidget {
 
