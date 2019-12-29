@@ -45,7 +45,7 @@ public slots:
     void setTool(QString nameOfTool);
 
     bool openImage(const QString &fileName);
-    bool saveImage(const QString &filename, const char *fileFormat);
+    bool saveAsImage(const QString &filename, const char *fileFormat);
 
 
 protected:

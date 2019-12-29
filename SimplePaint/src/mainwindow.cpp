@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(this,
                      &MainWindow::needToSave,
                      scribbleArea,
-                     &image::saveImage);
+                     &image::saveAsImage);
 
     QObject::connect(this,
                      &MainWindow::needToOpenImg,
@@ -32,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
                      &image::openImage);
 
     QObject::connect(this,
-                     &MainWindow::signalSetWidth,
+                     &MainWindow::widthChanged,
                      scribbleArea,
                      &image::setBrushWidth);
 
@@ -49,7 +49,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_actionClose_triggered()
 {
     QMessageBox::StandardButton reply;
@@ -58,7 +57,8 @@ void MainWindow::on_actionClose_triggered()
     if (reply == QMessageBox::Discard)
         QApplication::quit();
     else if (reply == QMessageBox::Save){
-        //TODO sacuvati
+        on_actionSave_triggered();
+        QApplication::quit();
     }
 }
 
@@ -69,47 +69,45 @@ void MainWindow::closeEvent(QCloseEvent* event)
 
 void MainWindow::on_actionOpen_triggered()
 {
-    QString fileName = QFileDialog::getOpenFileName(this,
+    QString filename = QFileDialog::getOpenFileName(this,
             tr("Open Picture"),
             path,
             tr("Image Files (*.png *.jpg *.jpeg)")
            );
 
-    if(!fileName.isEmpty() && !fileName.isNull())
+    if(!filename.isEmpty() && !filename.isNull())
     {
-        auto index_of_slash = fileName.lastIndexOf("/");
+        auto index_of_slash = filename.lastIndexOf("/");
 
-        MainWindow::path = fileName.chopped(fileName.size() - index_of_slash);
-        emit needToOpenImg(fileName);
+        MainWindow::path = filename.chopped(filename.size() - index_of_slash);
+        emit needToOpenImg(filename);
     }
 }
 
 void MainWindow::on_actionSave_as_triggered()
 {
-    QByteArray fileFormat = "png";
-
     QString initialPath = MainWindow::path + "/untitled." + fileFormat;
 
-    QString filename = QFileDialog::getSaveFileName(this, tr("Save As"),
+    fileName = QFileDialog::getSaveFileName(this, tr("Save As"),
                                    initialPath,
                                    tr("%1 Files (*.%2);;All Files (*)")
                                    .arg(QString::fromLatin1(fileFormat.toUpper()))
                                    .arg(QString::fromLatin1(fileFormat)));
 
-    if (filename.isEmpty())
+    if (fileName.isEmpty())
             return;
 
-    emit needToSave(filename, fileFormat.constData());
+    emit needToSave(fileName, fileFormat.constData());
 }
 
-void MainWindow::on_actionColor_Pallete_triggered()
+void MainWindow::on_actionSave_triggered()
 {
-    emit colorChanged();
-}
-
-void MainWindow::on_actionColorPicker_triggered()
-{
-    emit toolChanged("colorpicker");
+    if(fileName == "")
+    {
+        on_actionSave_as_triggered();
+        return;
+    }
+    emit needToSave(fileName, fileFormat.constData());
 }
 
 void MainWindow::on_actionPencil_triggered()
@@ -122,9 +120,14 @@ void MainWindow::on_actionErase_triggered()
     emit toolChanged("eraser");
 }
 
+void MainWindow::on_actionColorPicker_triggered()
+{
+    emit toolChanged("colorpicker");
+}
+
 void MainWindow::on_actionBrush_triggered()
 {
-    emit signalSetWidth();
+    emit widthChanged();
     emit toolChanged("brush");
 }
 
@@ -146,4 +149,9 @@ void MainWindow::on_actionRectangle_triggered()
 void MainWindow::on_actionEllipse_triggered()
 {
     emit toolChanged("ellipse");
+}
+
+void MainWindow::on_actionColor_Pallete_triggered()
+{
+    emit colorChanged();
 }

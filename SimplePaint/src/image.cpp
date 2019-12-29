@@ -48,7 +48,7 @@ bool image::openImage(const QString &fileName)
     return true;
 }
 
-bool image::saveImage(const QString &filename, const char *fileFormat)
+bool image::saveAsImage(const QString &filename, const char *fileFormat)
 {
     QImage imageToSave = img;
         resizeImage(&imageToSave, img.size());
