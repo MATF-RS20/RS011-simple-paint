@@ -26,7 +26,8 @@ void Bucket::setWidth(const int width) {Q_UNUSED(width) return; }
 
 // TODO:
 // Za sada samo boji pozadinu
-void Bucket::paint(QPoint endPoint){
+void Bucket::paint(QPoint endPoint)
+{
     Q_UNUSED(endPoint);
 
     QPainter painter(image);

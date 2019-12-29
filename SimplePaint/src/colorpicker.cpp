@@ -14,14 +14,16 @@ void ColorPicker::mouseClicked(QMouseEvent *event) { event->ignore(); return; }
 
 void ColorPicker::mouseMoved(QMouseEvent *event) { event->ignore(); return; }
 
-void ColorPicker::mouseReleased(QMouseEvent *event){ 
+void ColorPicker::mouseReleased(QMouseEvent *event)
+{
     pickerButton = event->button();
     paint(event->pos());
 }
 
 void ColorPicker::setWidth(const int width) {Q_UNUSED(width) return; }
 
-void ColorPicker::paint(QPoint endPoint){
+void ColorPicker::paint(QPoint endPoint)
+{
 
     QPainter painter(image);
 

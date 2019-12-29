@@ -8,31 +8,25 @@ Ellipse::Ellipse(QColor* color, int width, QImage* img)
 
 Ellipse::~Ellipse(){}
 
-void Ellipse::mouseClicked(QMouseEvent *event){
+void Ellipse::mouseClicked(QMouseEvent *event)
+{
     if (event->button() == Qt::LeftButton)
     {
         lastPoint = event->pos();
     }
 }
 
-void Ellipse::mouseMoved(QMouseEvent *event){
-    //if (event->buttons() & Qt::LeftButton)
-    //    paint(event->pos());
-    event->ignore();
+void Ellipse::mouseMoved(QMouseEvent *event) { event->ignore(); }
 
-}
-
-void Ellipse::mouseReleased(QMouseEvent *event){
-
+void Ellipse::mouseReleased(QMouseEvent *event)
+{
     if (event->button() == Qt::LeftButton)
     {
         paint(event->pos());
     }
 }
 
-void Ellipse::setWidth(const int width) {
-    myWidth = width;
-}
+void Ellipse::setWidth(const int width) { myWidth = width; }
 
 void Ellipse::paint(QPoint endPoint)
 {

@@ -8,21 +8,18 @@ Line::Line(QColor* color, int width, QImage* img)
 
 Line::~Line(){}
 
-void Line::mouseClicked(QMouseEvent *event){
+void Line::mouseClicked(QMouseEvent *event)
+{
     if (event->button() == Qt::LeftButton)
     {
         lastPoint = event->pos();
     }
 }
 
-void Line::mouseMoved(QMouseEvent *event){
-    //if (event->buttons() & Qt::LeftButton)
-    //    paint(event->pos());
-    event->ignore();
+void Line::mouseMoved(QMouseEvent *event) { event->ignore(); }
 
-}
-
-void Line::mouseReleased(QMouseEvent *event){
+void Line::mouseReleased(QMouseEvent *event)
+{
 
     if (event->button() == Qt::LeftButton)
     {
@@ -30,7 +27,8 @@ void Line::mouseReleased(QMouseEvent *event){
     }
 }
 
-void Line::setWidth(const int width) {
+void Line::setWidth(const int width)
+{
     myWidth = width;
 }
 

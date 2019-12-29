@@ -8,21 +8,18 @@ Rect::Rect(QColor* color, int width, QImage* img)
 
 Rect::~Rect(){}
 
-void Rect::mouseClicked(QMouseEvent *event){
+void Rect::mouseClicked(QMouseEvent *event)
+{
     if (event->button() == Qt::LeftButton)
     {
         lastPoint = event->pos();
     }
 }
 
-void Rect::mouseMoved(QMouseEvent *event){
-    //if (event->buttons() & Qt::LeftButton)
-    //    paint(event->pos());
-    event->ignore();
+void Rect::mouseMoved(QMouseEvent *event) { event->ignore(); }
 
-}
-
-void Rect::mouseReleased(QMouseEvent *event){
+void Rect::mouseReleased(QMouseEvent *event)
+{
 
     if (event->button() == Qt::LeftButton)
     {
@@ -30,9 +27,7 @@ void Rect::mouseReleased(QMouseEvent *event){
     }
 }
 
-void Rect::setWidth(const int width) {
-    myWidth = width;
-}
+void Rect::setWidth(const int width) { myWidth = width; }
 
 void Rect::paint(QPoint endPoint)
 {

@@ -138,8 +138,6 @@ void MainWindow::on_actionBucket_triggered()
     emit toolChanged("bucket");
 }
 
-
-
 void MainWindow::on_actionRectangle_triggered()
 {
     emit toolChanged("rect");
