@@ -32,6 +32,11 @@ MainWindow::MainWindow(QWidget *parent)
                      &image::openImage);
 
     QObject::connect(this,
+                     &MainWindow::signalSetWidth,
+                     scribbleArea,
+                     &image::setBrushWidth);
+
+    QObject::connect(this,
                      &MainWindow::toolChanged,
                      scribbleArea,
                      &image::setTool);
@@ -119,6 +124,7 @@ void MainWindow::on_actionErase_triggered()
 
 void MainWindow::on_actionBrush_triggered()
 {
+    emit signalSetWidth();
     emit toolChanged("brush");
 }
 

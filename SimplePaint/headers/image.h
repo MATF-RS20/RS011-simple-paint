@@ -35,11 +35,13 @@ public:
     // the image was modified?
     bool isModified() const { return modified; }
     QColor penColor() const { return primaryColor; }
+    int penWidth() const { return myWidth; }
     QImage getImage() const { return img; }
 
 public slots:
     void clearImage();
     void setPenColor();
+    void setBrushWidth();
     void setTool(QString nameOfTool);
 
     bool openImage(const QString &fileName);
@@ -58,7 +60,7 @@ private:
     void resizeImage(QImage *img, const QSize &newSize);
 
     bool modified;                 // saved after a change?
-    bool whiteBackground;         //initial background
+    bool whiteBackground;         // initial background
 
     int myWidth;
 

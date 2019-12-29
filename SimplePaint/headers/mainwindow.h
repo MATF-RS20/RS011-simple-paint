@@ -42,6 +42,7 @@ public:
 signals:
     void colorChanged();
     void toolChanged(QString nameOfTool);
+    void signalSetWidth();
     void needToSave(QString filename, const char* fileFormat);
     void needToOpenImg(const QString &filename);
 

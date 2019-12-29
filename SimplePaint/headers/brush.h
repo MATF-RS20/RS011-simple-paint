@@ -2,6 +2,7 @@
 #define BRUSH_H
 
 #include "headers/tool.h"
+#include <QInputDialog>
 
 class Brush : public Tool
 {
@@ -16,6 +17,7 @@ public:
     void mouseClicked(QMouseEvent *) override;
     void mouseReleased(QMouseEvent *) override;
 
+    int penWidth() const;
     void setWidth(const int width) override;
 
 

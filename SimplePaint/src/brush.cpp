@@ -28,12 +28,14 @@ void Brush::mouseReleased(QMouseEvent *event){
     }
 }
 
+int Brush::penWidth() const { return myWidth; }
 
 void Brush::setWidth(const int width) {
     myWidth = width;
 }
 
-void Brush::paint(QPoint endPoint){
+void Brush::paint(QPoint endPoint)
+{
 
     QPainter painter(image);
     painter.setPen(QPen(*myColor,

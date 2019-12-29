@@ -68,6 +68,19 @@ void image::setPenColor()
      primaryColor = answer.isValid() ? answer : primaryColor;
 }
 
+void image::setBrushWidth()
+{
+    bool okay;
+
+    int newWidth = QInputDialog::getInt(this, tr("Width"),
+                                        tr("Select pen width:"),
+                                        penWidth(),
+                                        1, 50, 1, &okay);
+    // Change the pen width
+    if (okay)
+        tool->setWidth(newWidth);
+}
+
 
 // Color the image area with white
 void image::clearImage()
