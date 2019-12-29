@@ -127,13 +127,14 @@ void MainWindow::on_actionColorPicker_triggered()
 
 void MainWindow::on_actionBrush_triggered()
 {
-    emit widthChanged();
     emit toolChanged("brush");
+    emit widthChanged();
 }
 
 void MainWindow::on_actionLine_triggered()
 {
     emit toolChanged("line");
+    emit widthChanged();
 }
 
 void MainWindow::on_actionBucket_triggered()
@@ -144,11 +145,13 @@ void MainWindow::on_actionBucket_triggered()
 void MainWindow::on_actionRectangle_triggered()
 {
     emit toolChanged("rect");
+    emit widthChanged();
 }
 
 void MainWindow::on_actionEllipse_triggered()
 {
     emit toolChanged("ellipse");
+    emit widthChanged();
 }
 
 void MainWindow::on_actionColor_Pallete_triggered()

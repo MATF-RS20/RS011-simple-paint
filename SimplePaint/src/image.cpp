@@ -10,14 +10,14 @@ image::image(QWidget *parent)
     , secondaryColor(Qt::white)
 {
 
-    allTools.insert(std::pair<QString, Tool*>("pencil", new Pencil(&primaryColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("pencil", new Pencil(&primaryColor, 2, &img)));
     allTools.insert(std::pair<QString, Tool*>("eraser", new Eraser(&secondaryColor, 6, &img)));
     allTools.insert(std::pair<QString, Tool*>("colorpicker", new ColorPicker(&primaryColor, &secondaryColor, &img)));
-    allTools.insert(std::pair<QString, Tool*>("brush", new Brush(&primaryColor, 5, &img)));
+    allTools.insert(std::pair<QString, Tool*>("brush", new Brush(&primaryColor, myWidth, &img)));
     allTools.insert(std::pair<QString, Tool*>("line", new Line(&primaryColor, myWidth, &img)));
     allTools.insert(std::pair<QString, Tool*>("bucket", new Bucket(&primaryColor, &img)));
-    allTools.insert(std::pair<QString, Tool*>("ellipse", new Ellipse(&primaryColor, 5, &img)));
-    allTools.insert(std::pair<QString, Tool*>("rect", new Rect(&primaryColor, 5, &img)));
+    allTools.insert(std::pair<QString, Tool*>("ellipse", new Ellipse(&primaryColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("rect", new Rect(&primaryColor, myWidth, &img)));
 
     // initial tool
     tool = allTools.at("pencil");
@@ -76,9 +76,11 @@ void image::setBrushWidth()
                                         tr("Select pen width:"),
                                         penWidth(),
                                         1, 50, 1, &okay);
-    // Change the pen width
+    // Change the width
     if (okay)
+    {
         tool->setWidth(newWidth);
+    }
 }
 
 

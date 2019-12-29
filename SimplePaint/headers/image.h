@@ -60,10 +60,9 @@ private:
     void resizeImage(QImage *img, const QSize &newSize);
 
     bool modified;                 // saved after a change?
-    bool whiteBackground;         // initial background
+    bool whiteBackground;          // initial background
 
     int myWidth;
-
     QColor primaryColor;
     QColor secondaryColor;
     QImage img;

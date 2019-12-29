@@ -31,7 +31,7 @@ void Pencil::mouseReleased(QMouseEvent *event)
     }
 }
 
-void Pencil::setWidth(const int width) { myWidth = width; }
+void Pencil::setWidth(const int width) { Q_UNUSED(width); }
 
 void Pencil::paint(QPoint endPoint)
 {
