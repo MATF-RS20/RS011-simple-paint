@@ -110,6 +110,17 @@ void MainWindow::on_actionSave_triggered()
     emit needToSave(fileName, fileFormat.constData());
 }
 
+void MainWindow::on_actionHelp_triggered()
+{
+    QMessageBox::information(
+        this,
+        tr("Help"),
+        tr("Welcome to Simple Paint!\n\n"
+           "Simple Paint is a program for drawing and simple image manipulation, similar to the existing Paint program."
+           "\nUsage:\nOn the left is a toolbar with painting tools. Selecting the desired tool is done by clicking on the right icon."
+           " In the upper left corner there is a menu with additional functionalities: open, save, undo, redo etc...") );
+}
+
 void MainWindow::on_actionPencil_triggered()
 {
     emit toolChanged("pencil");

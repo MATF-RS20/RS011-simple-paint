@@ -123,7 +123,7 @@ void image::resizeEvent(QResizeEvent *event)
     if ((width() > img.width() || height() > img.height()) && whiteBackground)
     {
         int newWidth = qMax(width()-20, img.width());
-        int newHeight = qMax(height() + 120, img.height());
+        int newHeight = qMax(height() + 140, img.height());
         resizeImage(&img, QSize(newWidth, newHeight));
         whiteBackground = false;
         update();

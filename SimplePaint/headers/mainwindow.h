@@ -25,6 +25,10 @@
 #include <QSize>
 #include <QCloseEvent>
 
+#include <QUndoCommand>
+#include <QUndoStack>
+#include <QUndoView>
+
 class image;
 
 QT_BEGIN_NAMESPACE
@@ -54,6 +58,7 @@ private slots:
     void on_actionOpen_triggered();
     void on_actionSave_as_triggered();
     void on_actionSave_triggered();
+    void on_actionHelp_triggered();
 
     void on_actionPencil_triggered();
     void on_actionErase_triggered();
