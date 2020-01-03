@@ -23,7 +23,8 @@ SOURCES += \
     ./src/line.cpp \
     ./src/bucket.cpp \
     ./src/ellipse.cpp \
-    ./src/rect.cpp
+    ./src/rect.cpp \
+    ./src/triangle.cpp
 
 HEADERS += \
     ./headers/mainwindow.h \
@@ -36,7 +37,8 @@ HEADERS += \
     ./headers/line.h \
     ./headers/bucket.h \
     ./headers/ellipse.h \
-    ./headers/rect.h
+    ./headers/rect.h \
+    ./headers/triangle.h
 
 FORMS += \
     ./forms/mainwindow.ui

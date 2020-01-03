@@ -179,6 +179,12 @@ void MainWindow::on_actionEllipse_triggered()
     emit widthChanged();
 }
 
+void MainWindow::on_actionTriangle_triggered()
+{
+    emit toolChanged("triangle");
+    emit widthChanged();
+}
+
 void MainWindow::on_actionColor_Pallete_triggered()
 {
     emit colorChanged();

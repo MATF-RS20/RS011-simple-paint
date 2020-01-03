@@ -70,6 +70,7 @@ private slots:
     void on_actionBucket_triggered();
     void on_actionRectangle_triggered();
     void on_actionEllipse_triggered();
+    void on_actionTriangle_triggered();
 
     void on_actionColor_Pallete_triggered();
 

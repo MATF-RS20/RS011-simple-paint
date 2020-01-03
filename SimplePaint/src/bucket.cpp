@@ -29,28 +29,109 @@ void Bucket::paint(QPoint endPoint)
     auto color = image->pixelColor(endPoint);
 
     colorFill(endPoint.x(), endPoint.y(), color);
-
 }
 
 
 //TODO
-//prepraviti da ne puca program,
-//u pojedinim momentima puca zbog broja stek okvira
-//ili prebaciti na iterativni nacin ili nekako voditi racuna
 void Bucket::colorFill(int x, int y, QColor color){
     auto presentColor = image->pixelColor(x, y);
-    if(presentColor != color)
-        return;
+    int originl_x = x;
+    int originl_y = y;
 
-    image->setPixelColor(x, y, *myColor);
+    while (x > 0 && image->pixelColor(x-1, y) == color) {
+        if(presentColor != color)
+            continue;
+        image->setPixelColor(x, y, *myColor);
+        int o_y = y;
 
-    if(x > 0 && image->pixelColor(x-1, y) == color)
-        colorFill(x-1, y, color);
-    if(y > 0 && image->pixelColor(x, y-1) == color)
-        colorFill(x, y-1, color);
-    if(x < image->size().width()-1 && image->pixelColor(x+1, y) == color)
-        colorFill(x+1, y, color);
-    if(y < image->size().height()-1 && image->pixelColor(x, y+1) == color)
-        colorFill(x, y+1, color);
+        while (y > 0 && image->pixelColor(x, y-1) == color) {
+            if(presentColor != color)
+                continue;
+            image->setPixelColor(x, y, *myColor);
+            y--;
+        }
+        y = o_y;
+        while (y < image->size().height()-1 && image->pixelColor(x, y+1) == color) {
+            if(presentColor != color)
+                continue;
+            image->setPixelColor(x, y, *myColor);
+            y++;
+        }
+        y = o_y;
 
+        x--;
+    }
+    x = originl_x;
+
+    while (y > 0 && image->pixelColor(x, y-1) == color) {
+        if(presentColor != color)
+            continue;
+        image->setPixelColor(x, y, *myColor);
+        int o_x = x;
+        while (x > 0 && image->pixelColor(x-1, y) == color) {
+            if(presentColor != color)
+                continue;
+            image->setPixelColor(x, y, *myColor);
+            x--;
+        }
+        x = o_x;
+
+        while (x < image->size().width()-1 && image->pixelColor(x+1, y) == color) {
+            if(presentColor != color)
+               continue;
+            image->setPixelColor(x, y, *myColor);
+               x++;
+        }
+        x = o_x;
+        y--;
+    }
+    y = originl_y;
+
+    while (x < image->size().width()-1 && image->pixelColor(x+1, y) == color) {
+        if(presentColor != color)
+            continue;
+        image->setPixelColor(x, y, *myColor);
+
+        int o_y = y;
+
+        while (y > 0 && image->pixelColor(x, y-1) == color) {
+            if(presentColor != color)
+                continue;
+            image->setPixelColor(x, y, *myColor);
+            y--;
+        }
+        y = o_y;
+        while (y < image->size().height()-1 && image->pixelColor(x, y+1) == color) {
+            if(presentColor != color)
+                continue;
+            image->setPixelColor(x, y, *myColor);
+            y++;
+        }
+        y = o_y;
+        x++;
+    }
+    x = originl_x;
+    while (y < image->size().height()-1 && image->pixelColor(x, y+1) == color) {
+        if(presentColor != color)
+            continue;
+        image->setPixelColor(x, y, *myColor);
+        int o_x = x;
+        while (x > 0 && image->pixelColor(x-1, y) == color) {
+            if(presentColor != color)
+                 continue;
+            image->setPixelColor(x, y, *myColor);
+            x--;
+        }
+        x = o_x;
+
+        while (x < image->size().width()-1 && image->pixelColor(x+1, y) == color) {
+            if(presentColor != color)
+                continue;
+            image->setPixelColor(x, y, *myColor);
+            x++;
+        }
+        x = o_x;
+        y++;
+    }
+    y = originl_y;
 }

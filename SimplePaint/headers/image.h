@@ -25,6 +25,7 @@
 #include "headers/bucket.h"
 #include "headers/ellipse.h"
 #include "headers/rect.h"
+#include "headers/triangle.h"
 
 class image: public QWidget {
 

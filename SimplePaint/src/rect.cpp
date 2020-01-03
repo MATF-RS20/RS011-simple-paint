@@ -31,7 +31,6 @@ void Rect::setWidth(const int width) { myWidth = width; }
 void Rect::paint(QPoint endPoint)
 {
     QPainter painter(image);
-    painter.beginNativePainting();
 
     painter.setPen(QPen(*myColor,
                         myWidth,
@@ -46,7 +45,5 @@ void Rect::paint(QPoint endPoint)
     painter.drawRect(lastPoint.x(), lastPoint.y(), rx, ry);
 
     modified = true;
-
-    painter.endNativePainting();
 }
 
