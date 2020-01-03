@@ -35,7 +35,6 @@ void Line::setWidth(const int width)
 void Line::paint(QPoint endPoint)
 {
     QPainter painter(image);
-    painter.beginNativePainting();
 
     painter.setPen(QPen(*myColor,
                         myWidth,
@@ -47,7 +46,5 @@ void Line::paint(QPoint endPoint)
     painter.drawLine(lastPoint, endPoint);
 
     modified = true;
-
-    painter.endNativePainting();
 }
 

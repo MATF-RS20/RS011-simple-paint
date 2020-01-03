@@ -22,4 +22,4 @@ private:
     QPoint lastPoint;
 };
 
-#endif // TOOL_H
+#endif // PENCIL_H

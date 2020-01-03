@@ -31,7 +31,6 @@ void Ellipse::setWidth(const int width) { myWidth = width; }
 void Ellipse::paint(QPoint endPoint)
 {
     QPainter painter(image);
-    painter.beginNativePainting();
 
     painter.setPen(QPen(*myColor,
                         myWidth,
@@ -47,7 +46,5 @@ void Ellipse::paint(QPoint endPoint)
 
 
     modified = true;
-
-    painter.endNativePainting();
 }
 

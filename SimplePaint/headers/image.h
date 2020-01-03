@@ -46,7 +46,7 @@ public slots:
 
     bool openImage(const QString &fileName);
     bool saveAsImage(const QString &filename, const char *fileFormat);
-
+    void needToCrop();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -58,6 +58,7 @@ protected:
 
 private:
     void resizeImage(QImage *img, const QSize &newSize);
+    void cropImage();
 
     bool modified;                 // saved after a change?
     bool whiteBackground;          // initial background
@@ -65,8 +66,11 @@ private:
     int myWidth;
     QColor primaryColor;
     QColor secondaryColor;
+    bool has_image;
+    bool crop;
+    QPoint startPoint;
+    QPoint finishPoint;
     QImage img;
-    QPoint lastPoint;
     Tool *tool;
     std::map<QString, Tool*> allTools;
 };

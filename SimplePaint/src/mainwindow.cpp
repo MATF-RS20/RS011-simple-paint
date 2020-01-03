@@ -41,6 +41,11 @@ MainWindow::MainWindow(QWidget *parent)
                      scribbleArea,
                      &image::setTool);
 
+    QObject::connect(this,
+                     &MainWindow::needToCrop,
+                     scribbleArea,
+                     &image::needToCrop);
+
     qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
 }
 
@@ -169,3 +174,9 @@ void MainWindow::on_actionColor_Pallete_triggered()
 {
     emit colorChanged();
 }
+
+void MainWindow::on_actionCrop_triggered()
+{
+    emit needToCrop();
+}
+

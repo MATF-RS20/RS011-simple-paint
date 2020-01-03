@@ -1,7 +1,6 @@
 #ifndef Ellipse_H
 #define Ellipse_H
 
-
 #include <QPainter>
 #include <QPen>
 #include <QBrush>

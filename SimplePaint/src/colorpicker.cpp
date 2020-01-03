@@ -24,7 +24,6 @@ void ColorPicker::setWidth(const int width) {Q_UNUSED(width) return; }
 
 void ColorPicker::paint(QPoint endPoint)
 {
-
     QPainter painter(image);
 
     auto Color = image->pixelColor(endPoint);
@@ -33,6 +32,5 @@ void ColorPicker::paint(QPoint endPoint)
     else
         *mySecondary = Color;
 
-    qDebug() << Color;
 }
 

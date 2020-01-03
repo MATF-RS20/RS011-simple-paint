@@ -1,7 +1,6 @@
 #include <iostream>
 #include "headers/rect.h"
 
-
 Rect::Rect(QColor* color, int width, QImage* img)
     :Tool::Tool(color, width, img)
 {}

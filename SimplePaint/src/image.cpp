@@ -8,6 +8,8 @@ image::image(QWidget *parent)
     , myWidth(2)
     , primaryColor(Qt::black)
     , secondaryColor(Qt::white)
+    , has_image(false)
+    , crop(false)
 {
 
     allTools.insert(std::pair<QString, Tool*>("pencil", new Pencil(&primaryColor, 2, &img)));
@@ -24,8 +26,6 @@ image::image(QWidget *parent)
 
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
-
-
 }
 
 image::~image() {}
@@ -44,6 +44,7 @@ bool image::openImage(const QString &fileName)
     img = loadedImage;
 
     modified = false;
+    has_image = true;
     update();
     return true;
 }
@@ -60,6 +61,21 @@ bool image::saveAsImage(const QString &filename, const char *fileFormat)
     } else {
         return false;
     }
+}
+
+void image::needToCrop()
+{
+    if(has_image)
+        crop = true;
+}
+
+void image::cropImage()
+{
+    QRect rect(startPoint, finishPoint);
+    QImage croppedImg = img.copy(rect);
+    img = croppedImg;
+
+    crop = false;
 }
 
 void image::setPenColor()
@@ -94,19 +110,25 @@ void image::clearImage()
 
 void image::mousePressEvent(QMouseEvent *event)
 {
-    tool->mouseClicked(event);
+    if(!crop) { tool->mouseClicked(event); }
+    else if (crop && has_image && event->button() == Qt::LeftButton) { startPoint = event->pos(); }
     update();
 }
 
 void image::mouseMoveEvent(QMouseEvent *event)
 {
-    tool->mouseMoved(event);
+    if(!crop) { tool->mouseMoved(event); }
     update();
 }
 
 void image::mouseReleaseEvent(QMouseEvent *event)
 {
-    tool->mouseReleased(event);
+    if(!crop) { tool->mouseReleased(event); }
+    else if (event->button() == Qt::LeftButton && has_image && crop)
+    {
+        finishPoint = event->pos();
+        cropImage();
+    }
     update();
 }
 

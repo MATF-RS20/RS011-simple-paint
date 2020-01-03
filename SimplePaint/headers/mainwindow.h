@@ -49,6 +49,7 @@ signals:
     void widthChanged();
     void needToSave(QString filename, const char* fileFormat);
     void needToOpenImg(const QString &filename);
+    void needToCrop();
 
 
 private slots:
@@ -59,6 +60,7 @@ private slots:
     void on_actionSave_as_triggered();
     void on_actionSave_triggered();
     void on_actionHelp_triggered();
+    void on_actionCrop_triggered();
 
     void on_actionPencil_triggered();
     void on_actionErase_triggered();

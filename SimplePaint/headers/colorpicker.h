@@ -26,4 +26,4 @@ private:
     Qt::MouseButton pickerButton;
 };
 
-#endif // ERASER_H
+#endif // COLORPICKER_H
