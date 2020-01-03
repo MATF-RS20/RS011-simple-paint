@@ -2,6 +2,7 @@
 #define IMAGE_H
 
 #include <iostream>
+#include <stack>
 #include <QMainWindow>
 #include <QImage>
 #include <QPixmap>
@@ -13,6 +14,7 @@
 #include <QWidget>
 #include <QColorDialog>
 #include <QObject>
+#include <QLabel>
 
 #include "qpainter.h"
 
@@ -48,6 +50,10 @@ public slots:
     bool openImage(const QString &fileName);
     bool saveAsImage(const QString &filename, const char *fileFormat);
     void needToCrop();
+    void scaleImageZoomIn();
+    void scaleImageZoomOut();
+    void undoFunc();
+    void redoFunc();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
@@ -74,6 +80,14 @@ private:
     QImage img;
     Tool *tool;
     std::map<QString, Tool*> allTools;
+
+    // Za zoom
+    QLabel *imageLabel;
+    double scaleFactor = 1;
+
+    // Za undo
+    std::stack<QImage> imagesUndo;
+    std::stack<QImage> imagesRedo;
 };
 
 #endif // IMAGE_H

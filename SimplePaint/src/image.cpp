@@ -27,6 +27,9 @@ image::image(QWidget *parent)
 
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
+
+    // Pocetna slika
+    imagesUndo.push(getImage());
 }
 
 image::~image() {}
@@ -43,6 +46,9 @@ bool image::openImage(const QString &fileName)
 
     resizeImage(&loadedImage, newSize);
     img = loadedImage;
+
+    //Za undo
+    imagesUndo.push(getImage());
 
     modified = false;
     has_image = true;
@@ -79,6 +85,48 @@ void image::cropImage()
     crop = false;
 }
 
+void image::scaleImageZoomIn()
+{
+    /*QSize size = img.size() * 0.5;
+    QImage scaledImage = img.copy();
+    resizeImage(&scaledImage, size);
+    img = scaledImage;
+    update();*/
+
+  //  QPixmap scaledImage;
+  //  scaledImage.convertFromImage(img);
+    scaleFactor *= 1.25;
+    QSize size = img.size() * scaleFactor;
+    auto height = size.height();
+    auto width = size.width();
+    QPixmap scaledImage;
+    scaledImage.convertFromImage(img);
+    scaledImage.scaledToWidth(width);
+    scaledImage.scaledToHeight(height);
+    QImage image = scaledImage.toImage();
+    resizeImage(&image, size);
+    img = image;
+    update();
+
+
+}
+
+void image::scaleImageZoomOut()
+{
+    scaleFactor *= 0.8;
+    QSize size = img.size() * scaleFactor;
+    auto height = size.height();
+    auto width = size.width();
+    QPixmap scaledImage;
+    scaledImage.convertFromImage(img);
+    scaledImage.scaledToWidth(width);
+    scaledImage.scaledToHeight(height);
+    QImage image = scaledImage.toImage();
+    resizeImage(&image, size);
+    img = image;
+    update();
+}
+
 void image::setPenColor()
 {
      auto answer =  QColorDialog::getColor(primaryColor);
@@ -106,6 +154,7 @@ void image::clearImage()
 {
     img.fill(qRgb(255, 255, 255));
     modified = true;
+    imagesUndo.push(img);
     update();
 }
 
@@ -130,6 +179,7 @@ void image::mouseReleaseEvent(QMouseEvent *event)
         finishPoint = event->pos();
         cropImage();
     }
+    imagesUndo.push(getImage());
     update();
 }
 
@@ -140,6 +190,39 @@ void image::paintEvent(QPaintEvent *event)
 
     painter.drawImage(dirtyRect, img, dirtyRect);
 }
+
+void image::undoFunc()
+{
+    if(imagesUndo.size() == 1)
+        return;
+    else if (imagesUndo.size() == 2) {
+        imagesRedo.push(img);
+        img.fill(qRgb(255, 255, 255));
+        imagesUndo.push(img);
+        update();
+        imagesUndo.pop();
+        return;
+    }
+    imagesRedo.push(imagesUndo.top());
+    imagesUndo.pop();
+    QImage old = imagesUndo.top();
+    img = old;
+    update();
+}
+
+void image::redoFunc()
+{
+    if (imagesRedo.size() == 0)
+        return;
+    QImage old = imagesRedo.top();
+    imagesRedo.pop();
+    imagesUndo.push(old);
+    //QSize size = old.size();
+    //resizeImage(&old, size);
+    img = old;
+    update();
+}
+
 
 void image::resizeEvent(QResizeEvent *event)
 {

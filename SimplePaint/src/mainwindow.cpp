@@ -32,6 +32,27 @@ MainWindow::MainWindow(QWidget *parent)
                      &image::openImage);
 
     QObject::connect(this,
+                     &MainWindow::scaleIn,
+                     scribbleArea,
+                     &image::scaleImageZoomIn);
+
+
+    QObject::connect(this,
+                     &MainWindow::scaleOut,
+                     scribbleArea,
+                     &image::scaleImageZoomOut);
+
+    QObject::connect(this,
+                     &MainWindow::undo,
+                     scribbleArea,
+                     &image::undoFunc);
+
+    QObject::connect(this,
+                     &MainWindow::redo,
+                     scribbleArea,
+                     &image::redoFunc);
+
+    QObject::connect(this,
                      &MainWindow::widthChanged,
                      scribbleArea,
                      &image::setBrushWidth);
@@ -133,6 +154,28 @@ void MainWindow::on_actionHelp_triggered()
            "7. Zoom in/Zoom out - takes closer/wider look at the current work.\n"
            "8. Resize - Resizes current image.\n"
            "9. Crop - Crops selected area of the current image.\n") );
+}
+
+
+void MainWindow::on_actionZoom_In_triggered()
+{
+    emit scaleIn();
+}
+
+
+void MainWindow::on_actionZoom_Out_triggered()
+{
+    emit scaleOut();
+}
+
+void MainWindow::on_actionUndo_triggered()
+{
+    emit undo();
+}
+
+void MainWindow::on_actionRedo_triggered()
+{
+    emit redo();
 }
 
 void MainWindow::on_actionPencil_triggered()

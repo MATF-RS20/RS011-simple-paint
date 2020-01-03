@@ -50,6 +50,10 @@ signals:
     void needToSave(QString filename, const char* fileFormat);
     void needToOpenImg(const QString &filename);
     void needToCrop();
+    void scaleIn();
+    void scaleOut();
+    void undo();
+    void redo();
 
 
 private slots:
@@ -61,6 +65,10 @@ private slots:
     void on_actionSave_triggered();
     void on_actionHelp_triggered();
     void on_actionCrop_triggered();
+    void on_actionZoom_In_triggered();
+    void on_actionZoom_Out_triggered();
+    void on_actionUndo_triggered();
+    void on_actionRedo_triggered();
 
     void on_actionPencil_triggered();
     void on_actionErase_triggered();
