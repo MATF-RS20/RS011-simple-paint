@@ -18,6 +18,7 @@ public:
     void mouseReleased(QMouseEvent *) override;
 
     void setWidth(const int width) override;
+    void colorFill(int x, int y, QColor color);
 
 private:
     QPoint lastPoint;

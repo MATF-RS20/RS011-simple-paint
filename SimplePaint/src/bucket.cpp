@@ -24,17 +24,34 @@ void Bucket::mouseReleased(QMouseEvent *event)
 
 void Bucket::setWidth(const int width) {Q_UNUSED(width) return; }
 
-// TODO:
-// Za sada samo boji pozadinu
 void Bucket::paint(QPoint endPoint)
 {
-    Q_UNUSED(endPoint);
+    auto color = image->pixelColor(endPoint);
 
-    QPainter painter(image);
-
-    QBrush brush(*myColor, Qt::SolidPattern);
-
-    painter.fillRect(0, 0, image->width(), image->height(), brush);
+    colorFill(endPoint.x(), endPoint.y(), color);
 
 }
 
+
+//TODO
+//prepraviti da ne puca program,
+//u pojedinim momentima puca zbog broja stek okvira
+//ili prebaciti na iterativni nacin ili nekako voditi racuna
+
+void Bucket::colorFill(int x, int y, QColor color){
+    auto presentColor = image->pixelColor(x, y);
+    if(presentColor != color)
+        return;
+
+    image->setPixelColor(x, y, *myColor);
+
+    if(x > 0 && image->pixelColor(x-1, y) == color)
+        colorFill(x-1, y, color);
+    if(y > 0 && image->pixelColor(x, y-1) == color)
+        colorFill(x, y-1, color);
+    if(x < image->size().width()-1 && image->pixelColor(x+1, y) == color)
+        colorFill(x+1, y, color);
+    if(y < image->size().height()-1 && image->pixelColor(x, y+1) == color)
+        colorFill(x, y+1, color);
+
+}
