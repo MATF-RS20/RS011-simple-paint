@@ -37,7 +37,6 @@ void Bucket::paint(QPoint endPoint)
 //prepraviti da ne puca program,
 //u pojedinim momentima puca zbog broja stek okvira
 //ili prebaciti na iterativni nacin ili nekako voditi racuna
-
 void Bucket::colorFill(int x, int y, QColor color){
     auto presentColor = image->pixelColor(x, y);
     if(presentColor != color)
