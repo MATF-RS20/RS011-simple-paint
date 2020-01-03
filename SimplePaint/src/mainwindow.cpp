@@ -123,7 +123,16 @@ void MainWindow::on_actionHelp_triggered()
         tr("Welcome to Simple Paint!\n\n"
            "Simple Paint is a program for drawing and simple image manipulation, similar to the existing Paint program."
            "\nUsage:\nOn the left is a toolbar with painting tools. Selecting the desired tool is done by clicking on the right icon."
-           " In the upper left corner there is a menu with additional functionalities: open, save, undo, redo etc...") );
+           " In the upper left corner there is a menu with additional functionalities:\n"
+           "1. New - Starts new work.\n"
+           "2. Open - Opens an image.\n"
+           "3. Save/Save As - Saves the current image. Format: PNG.\n"
+           "4. Close - Closes current work and Simple Paint app.\n"
+           "5. Undo/Redo - Undoes last change / returns last change.\n"
+           "6. Theme - Changes the appereance of Simple Paint app.\n"
+           "7. Zoom in/Zoom out - takes closer/wider look at the current work.\n"
+           "8. Resize - Resizes current image.\n"
+           "9. Crop - Crops selected area of the current image.\n") );
 }
 
 void MainWindow::on_actionPencil_triggered()
