@@ -11,17 +11,25 @@ Ellipse::~Ellipse(){}
 void Ellipse::mouseClicked(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
-    {
+    {   finallDrawing = false;
+        tmp = *image;
+        localCopy = *image;
         lastPoint = event->pos();
     }
 }
 
-void Ellipse::mouseMoved(QMouseEvent *event) { event->ignore(); }
+void Ellipse::mouseMoved(QMouseEvent *event)
+{   *image = tmp;
+    tmp = localCopy;
+    paint(event->pos());
+}
 
 void Ellipse::mouseReleased(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
     {
+        *image = localCopy;
+        finallDrawing = true;
         paint(event->pos());
     }
 }
@@ -31,12 +39,20 @@ void Ellipse::setWidth(const int width) { myWidth = width; }
 void Ellipse::paint(QPoint endPoint)
 {
     QPainter painter(image);
-
-    painter.setPen(QPen(*myColor,
-                        myWidth,
-                        Qt::SolidLine,
-                        Qt::RoundCap,
-                        Qt::RoundJoin));
+    if(!finallDrawing){
+        painter.setPen(QPen(*myColor,
+                            myWidth,
+                            Qt::DashDotLine,
+                            Qt::RoundCap,
+                            Qt::RoundJoin));
+    }
+    else{
+        painter.setPen(QPen(*myColor,
+                            myWidth,
+                            Qt::SolidLine,
+                            Qt::RoundCap,
+                            Qt::RoundJoin));
+    }
 
     painter.setRenderHint(QPainter::Antialiasing);
     int rx = endPoint.x() - lastPoint.x();

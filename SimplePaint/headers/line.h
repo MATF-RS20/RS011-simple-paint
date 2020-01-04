@@ -24,6 +24,9 @@ public:
 
 private:
     QPoint lastPoint;
+    QImage localCopy;
+    QImage tmp;
+    bool finallDrawing;
 
 };
 

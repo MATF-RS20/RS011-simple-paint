@@ -27,6 +27,9 @@ private:
     QPoint Point1;
     QPoint Point2;
     QPoint Point3;
+    QImage tmp;
+    QImage localCopy;
+    bool finallDrawing;
 };
 
 
