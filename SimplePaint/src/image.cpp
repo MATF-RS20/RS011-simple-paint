@@ -47,6 +47,7 @@ bool image::openImage(const QString &fileName)
     modified = false;
     has_image = true;
     imagesUndo.push(img);
+    imagesRedo = std::stack<QImage>{};
     update();
     return true;
 }
@@ -172,16 +173,16 @@ void image::mouseReleaseEvent(QMouseEvent *event)
     {
         tool->mouseReleased(event);
         imagesUndo.push(img);
-        while(!imagesRedo.empty())
-            imagesRedo.pop();
+        imagesRedo = std::stack<QImage>{};
+
     }
     else if (event->button() == Qt::LeftButton && has_image && crop)
     {
         finishPoint = event->pos();
         cropImage();
         imagesUndo.push(img);
-        while(!imagesRedo.empty())
-            imagesRedo.pop();
+        imagesRedo = std::stack<QImage>{};
+
     }
 
     update();
@@ -204,7 +205,9 @@ void image::undoFunc()
     if(imagesUndo.empty())
     {
         return;
-    } else {
+    }
+    else
+    {
         imagesRedo.push(imagesUndo.top());
         imagesUndo.pop();
 
@@ -237,10 +240,11 @@ void image::redoFunc()
     std::cout << "REDO   undo: " << imagesUndo.size() << std::endl;
     std::cout << "REDO   redo: " << imagesRedo.size() << std::endl;
     */
-    if (imagesRedo.size() == 0)
+    if (imagesRedo.empty())
     {
         return;
-    } else
+    }
+    else
     {
         QImage old = imagesRedo.top();
         imagesRedo.pop();
