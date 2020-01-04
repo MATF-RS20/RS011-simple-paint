@@ -10,7 +10,8 @@ Rect::~Rect(){}
 void Rect::mouseClicked(QMouseEvent *event)
 {
     if (event->button() == Qt::LeftButton)
-    {   finallDrawing = false;
+    {
+        finallDrawing = false;
         tmp = *image;
         localCopy = *image;
         lastPoint = event->pos();
@@ -40,14 +41,16 @@ void Rect::setWidth(const int width) { myWidth = width; }
 void Rect::paint(QPoint endPoint)
 {
     QPainter painter(image);
-    if(!finallDrawing){
+    if(!finallDrawing)
+    {
         painter.setPen(QPen(*myColor,
                             myWidth,
                             Qt::DashDotLine,
                             Qt::RoundCap,
                             Qt::RoundJoin));
     }
-    else{
+    else
+    {
         painter.setPen(QPen(*myColor,
                             myWidth,
                             Qt::SolidLine,

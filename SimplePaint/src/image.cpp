@@ -27,9 +27,6 @@ image::image(QWidget *parent)
 
     // Roots the widget to the top left even if resized
     setAttribute(Qt::WA_StaticContents);
-
-    // Pocetna slika
-    imagesUndo.push(getImage());
 }
 
 image::~image() {}
@@ -47,11 +44,9 @@ bool image::openImage(const QString &fileName)
     resizeImage(&loadedImage, newSize);
     img = loadedImage;
 
-    //Za undo
-    imagesUndo.push(getImage());
-
     modified = false;
     has_image = true;
+    imagesUndo.push(img);
     update();
     return true;
 }
@@ -154,7 +149,7 @@ void image::clearImage()
 {
     img.fill(qRgb(255, 255, 255));
     modified = true;
-    imagesUndo.push(img);
+
     update();
 }
 
@@ -173,13 +168,22 @@ void image::mouseMoveEvent(QMouseEvent *event)
 
 void image::mouseReleaseEvent(QMouseEvent *event)
 {
-    if(!crop) { tool->mouseReleased(event); }
+    if(!crop)
+    {
+        tool->mouseReleased(event);
+        imagesUndo.push(img);
+        while(!imagesRedo.empty())
+            imagesRedo.pop();
+    }
     else if (event->button() == Qt::LeftButton && has_image && crop)
     {
         finishPoint = event->pos();
         cropImage();
+        imagesUndo.push(img);
+        while(!imagesRedo.empty())
+            imagesRedo.pop();
     }
-    imagesUndo.push(getImage());
+
     update();
 }
 
@@ -193,34 +197,62 @@ void image::paintEvent(QPaintEvent *event)
 
 void image::undoFunc()
 {
-    if(imagesUndo.size() == 1)
+    /*std::cout << "\nPRE OPERACIJA: " << std::endl;
+    std::cout << "UNDO   undo: " << imagesUndo.size() << std::endl;
+    std::cout << "UNDO   redo: " << imagesRedo.size() << std::endl;*/
+
+    if(imagesUndo.empty())
+    {
         return;
-    else if (imagesUndo.size() == 2) {
-        imagesRedo.push(img);
-        img.fill(qRgb(255, 255, 255));
-        imagesUndo.push(img);
-        update();
+    } else {
+        imagesRedo.push(imagesUndo.top());
         imagesUndo.pop();
+
+        if(imagesUndo.empty())
+        {
+            clearImage();
+            update();
+            /*std::cout << "POSLE OPERACIJA\nUNDO   undo: " << imagesUndo.size() << std::endl;
+            std::cout << "UNDO   redo: " << imagesRedo.size() << std::endl;
+            std::cout << "--------------------------------------------------" << std::endl;*/
+            return;
+        }
+
+        QImage old = imagesUndo.top();
+        img = old;
+        update();
+
+        /*std::cout << "POSLE OPERACIJA\nUNDO   undo: " << imagesUndo.size() << std::endl;
+        std::cout << "UNDO   redo: " << imagesRedo.size() << std::endl;
+        std::cout << "--------------------------------------------------" << std::endl;*/
+
         return;
     }
-    imagesRedo.push(imagesUndo.top());
-    imagesUndo.pop();
-    QImage old = imagesUndo.top();
-    img = old;
-    update();
 }
 
 void image::redoFunc()
 {
+    /*
+    std::cout << "\nPRE OPERACIJA: " << std::endl;
+    std::cout << "REDO   undo: " << imagesUndo.size() << std::endl;
+    std::cout << "REDO   redo: " << imagesRedo.size() << std::endl;
+    */
     if (imagesRedo.size() == 0)
+    {
         return;
-    QImage old = imagesRedo.top();
-    imagesRedo.pop();
-    imagesUndo.push(old);
-    //QSize size = old.size();
-    //resizeImage(&old, size);
-    img = old;
-    update();
+    } else
+    {
+        QImage old = imagesRedo.top();
+        imagesRedo.pop();
+        imagesUndo.push(old);
+
+        img = old;
+        update();
+        /*
+        std::cout << "POSLE\nREDO   undo: " << imagesUndo.size() << std::endl;
+        std::cout << "REDO   redo: " << imagesRedo.size() << std::endl;*/
+        return;
+    }
 }
 
 

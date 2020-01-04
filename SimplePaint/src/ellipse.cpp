@@ -19,7 +19,8 @@ void Ellipse::mouseClicked(QMouseEvent *event)
 }
 
 void Ellipse::mouseMoved(QMouseEvent *event)
-{   *image = tmp;
+{
+    *image = tmp;
     tmp = localCopy;
     paint(event->pos());
 }
@@ -39,14 +40,16 @@ void Ellipse::setWidth(const int width) { myWidth = width; }
 void Ellipse::paint(QPoint endPoint)
 {
     QPainter painter(image);
-    if(!finallDrawing){
+    if(!finallDrawing)
+    {
         painter.setPen(QPen(*myColor,
                             myWidth,
                             Qt::DashDotLine,
                             Qt::RoundCap,
                             Qt::RoundJoin));
     }
-    else{
+    else
+    {
         painter.setPen(QPen(*myColor,
                             myWidth,
                             Qt::SolidLine,
