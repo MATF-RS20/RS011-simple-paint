@@ -31,6 +31,8 @@
 
 class image: public QWidget {
 
+    Q_OBJECT
+
 public:
     image(QWidget *parent = nullptr);
     ~image() override;
@@ -40,6 +42,13 @@ public:
     QColor penColor() const { return primaryColor; }
     int penWidth() const { return myWidth; }
     QImage getImage() const { return img; }
+
+    // Za undo
+    std::stack<QImage> imagesUndo;
+    std::stack<QImage> imagesRedo;
+
+signals:
+    void activatedUndo();
 
 public slots:
     void clearImage();
@@ -85,9 +94,7 @@ private:
     QLabel *imageLabel;
     double scaleFactor = 1;
 
-    // Za undo
-    std::stack<QImage> imagesUndo;
-    std::stack<QImage> imagesRedo;
+
 };
 
 #endif // IMAGE_H

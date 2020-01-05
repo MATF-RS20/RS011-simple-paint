@@ -55,7 +55,8 @@ signals:
     void undo();
     void redo();
 
-
+public slots:
+    void activateUndo();
 private slots:
     void on_actionClose_triggered();
     void closeEvent(QCloseEvent*) override;

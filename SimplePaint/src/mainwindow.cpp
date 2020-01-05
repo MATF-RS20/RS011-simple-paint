@@ -67,6 +67,13 @@ MainWindow::MainWindow(QWidget *parent)
                      scribbleArea,
                      &image::needToCrop);
 
+    QObject::connect(scribbleArea,
+                     &image::activatedUndo,
+                     this,
+                     &MainWindow::activateUndo);
+
+    ui->actionUndo->setEnabled(false);
+    ui->actionRedo->setEnabled(false);
     qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
 }
 
@@ -170,12 +177,22 @@ void MainWindow::on_actionZoom_Out_triggered()
 
 void MainWindow::on_actionUndo_triggered()
 {
+    ui->actionRedo->setEnabled(true);
+
     emit undo();
+
+    if(scribbleArea->imagesUndo.empty())
+        ui->actionUndo->setEnabled(false);
 }
 
 void MainWindow::on_actionRedo_triggered()
-{
+{   ui->actionUndo->setEnabled(true);
+
     emit redo();
+
+    if(scribbleArea->imagesRedo.empty())
+        ui->actionRedo->setEnabled(false);
+
 }
 
 void MainWindow::on_actionPencil_triggered()
@@ -238,3 +255,8 @@ void MainWindow::on_actionCrop_triggered()
     emit needToCrop();
 }
 
+void MainWindow::activateUndo()
+{
+    ui->actionUndo->setEnabled(true);
+    ui->actionRedo->setEnabled(false);
+}
