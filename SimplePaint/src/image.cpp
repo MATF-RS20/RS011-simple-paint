@@ -267,6 +267,17 @@ void image::resizeImage(QImage *img, const QSize &newSize)
     *img = newImage;
 }
 
+void image::resizeCurrentImg()
+{
+    QString sizesStr = QInputDialog::getText(this, "Set new dimensions", tr("First enter one number for new width, then one for new height:"));
+    QStringList sizesNums = sizesStr.split(" ");
+    int newWidth = sizesNums.at(0).toInt();
+    int newHeight = sizesNums.at(1).toInt();
+
+    img = img.scaled(QSize(newWidth, newHeight));
+    update();
+}
+
 void image::setTool(QString nameOfTool)
 {
     tool = allTools.at(nameOfTool);

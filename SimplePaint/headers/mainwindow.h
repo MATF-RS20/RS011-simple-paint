@@ -50,11 +50,13 @@ signals:
     void needToSave(QString filename, const char* fileFormat);
     void needToOpenImg(const QString &filename);
     void needToCrop();
+    void needToResize();
     void scaleIn();
     void scaleOut();
     void undo();
     void redo();
     void newSheet();
+
 
 public slots:
     void activateUndo();
@@ -72,6 +74,7 @@ private slots:
     void on_actionZoom_Out_triggered();
     void on_actionUndo_triggered();
     void on_actionRedo_triggered();
+    void on_actionResize_triggered();
 
     void on_actionPencil_triggered();
     void on_actionErase_triggered();

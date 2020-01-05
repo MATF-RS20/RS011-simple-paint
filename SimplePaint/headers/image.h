@@ -64,6 +64,7 @@ public slots:
     void undoFunc();
     void redoFunc();
     void newSheet();
+    void resizeCurrentImg();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;
