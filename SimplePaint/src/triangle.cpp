@@ -40,8 +40,9 @@ void Triangle::paint(QPoint endPoint)
 {
     QPainter painter(image);
     Point3 = endPoint;
-    Point1 = QPoint((lastPoint.x()+endPoint.x())/2, (lastPoint.y()+endPoint.y())/2);
-    Point2 = QPoint(endPoint.x(), lastPoint.y());
+    Point1 = QPoint(lastPoint.x(), endPoint.y());
+    //Point1 = QPoint((lastPoint.x()+endPoint.x())/2, (lastPoint.y()+endPoint.y())/2);
+    Point2 = QPoint((endPoint.x()+lastPoint.x())/2, lastPoint.y());
     QVector<QPoint> points;
     points.append(Point2);
     points.append(Point1);
