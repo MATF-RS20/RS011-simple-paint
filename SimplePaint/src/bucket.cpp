@@ -1,4 +1,6 @@
 #include <iostream>
+#include <stack>
+#include <memory>
 #include "headers/bucket.h"
 
 
@@ -28,26 +30,42 @@ void Bucket::paint(QPoint endPoint)
 {
     auto color = image->pixelColor(endPoint);
 
-    colorFill(endPoint.x(), endPoint.y(), color);
+    colorFill(endPoint, color);
 }
 
 
 //TODO
-void Bucket::colorFill(int x, int y, QColor color){
-    auto presentColor = image->pixelColor(x, y);
+void Bucket::colorFill(QPoint startPoint, QColor color){
+    auto presentColor = image->pixelColor(startPoint);
 
-    if(presentColor != color)
+    if(presentColor == *myColor)
          return;
 
-    image->setPixelColor(x, y, *myColor);
+    std::shared_ptr<std::stack<QPoint>>
+            pointStack = std::make_shared<std::stack<QPoint>>();
 
-    if(x > 0 && image->pixelColor(x-1, y) == color)
-         colorFill(x-1, y, color);
-    if(y > 0 && image->pixelColor(x, y-1) == color)
-         colorFill(x, y-1, color);
-    if(x < image->size().width()-1 && image->pixelColor(x+1, y) == color)
-         colorFill(x+1, y, color);
-    if(y < image->size().height()-1 && image->pixelColor(x, y+1) == color)
-         colorFill(x, y+1, color);
+    pointStack->push(startPoint);
 
+    while(!pointStack->empty()){
+        auto topPoint = pointStack->top();
+        pointStack->pop();
+
+        image->setPixelColor(topPoint, *myColor);
+
+        auto x = topPoint.x();
+        auto y = topPoint.y();
+
+        if(x > 0 && image->pixelColor(x-1, y) == color){
+           pointStack->push(QPoint(x-1, y));
+        }
+        if(y > 0 && image->pixelColor(x, y-1) == color){
+            pointStack->push(QPoint(x, y-1));
+        }
+        if(x < image->size().width()-1 && image->pixelColor(x+1, y) == color){
+            pointStack->push(QPoint(x+1, y));
+        }
+        if(y < image->size().height()-1 && image->pixelColor(x, y+1) == color){
+            pointStack->push(QPoint(x, y+1));
+        }
+    }
 }
