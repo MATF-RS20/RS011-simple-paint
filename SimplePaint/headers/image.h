@@ -63,6 +63,7 @@ public slots:
     void scaleImageZoomOut();
     void undoFunc();
     void redoFunc();
+    void newSheet();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

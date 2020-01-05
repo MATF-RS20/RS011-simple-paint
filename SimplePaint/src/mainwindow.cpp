@@ -72,6 +72,11 @@ MainWindow::MainWindow(QWidget *parent)
                      this,
                      &MainWindow::activateUndo);
 
+    QObject::connect(this,
+                     &MainWindow::newSheet,
+                     scribbleArea,
+                     &image::newSheet);
+
     ui->actionUndo->setEnabled(false);
     ui->actionRedo->setEnabled(false);
     qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
@@ -98,6 +103,14 @@ void MainWindow::on_actionClose_triggered()
 void MainWindow::closeEvent(QCloseEvent* event)
 {   emit ui->actionClose->triggered();
     event->ignore();
+}
+
+void MainWindow::on_actionNew_triggered()
+{
+    on_actionSave_triggered();
+    fileName = "";
+    ui->actionUndo->setEnabled(false);
+    emit newSheet();
 }
 
 void MainWindow::on_actionOpen_triggered()

@@ -54,6 +54,7 @@ signals:
     void scaleOut();
     void undo();
     void redo();
+    void newSheet();
 
 public slots:
     void activateUndo();
@@ -61,6 +62,7 @@ private slots:
     void on_actionClose_triggered();
     void closeEvent(QCloseEvent*) override;
 
+    void on_actionNew_triggered();
     void on_actionOpen_triggered();
     void on_actionSave_as_triggered();
     void on_actionSave_triggered();

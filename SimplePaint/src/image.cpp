@@ -31,6 +31,28 @@ image::image(QWidget *parent)
 
 image::~image() {}
 
+void image::newSheet()
+{
+    int newWidth = 1234;
+    int newHeight = 640;
+    resizeImage(&img, QSize(newWidth, newHeight));
+    clearImage();
+    update();
+
+    modified = false;
+    has_image = false;
+    imagesUndo = std::stack<QImage>{};
+    imagesRedo = std::stack<QImage>{};
+    whiteBackground = true;          // initial background
+    myWidth = 2;
+    primaryColor = Qt::black;
+    secondaryColor = Qt::white;
+    crop = false;
+    tool = allTools.at("pencil");
+
+    return;
+}
+
 bool image::openImage(const QString &fileName)
 {
     QImage loadedImage;
@@ -140,10 +162,7 @@ void image::setBrushWidth()
                                         penWidth(),
                                         1, 50, 1, &okay);
     // Change the width
-    if (okay)
-    {
-        tool->setWidth(newWidth);
-    }
+    if (okay) { tool->setWidth(newWidth); }
 }
 
 
@@ -158,16 +177,15 @@ void image::clearImage()
 
 void image::mousePressEvent(QMouseEvent *event)
 {
-    if(tool != allTools.at("colorpicker")){
+    modified = true;
+    if(tool != allTools.at("colorpicker"))
+    {
         imagesUndo.push(img);
         imagesRedo = std::stack<QImage>{};
         emit activatedUndo();
     }
 
-    if(!crop)
-    {
-        tool->mouseClicked(event);
-    }
+    if(!crop) { tool->mouseClicked(event); }
     else if (crop && has_image && event->button() == Qt::LeftButton) { startPoint = event->pos(); }
     update();
 }
@@ -203,45 +221,6 @@ void image::paintEvent(QPaintEvent *event)
 
 void image::undoFunc()
 {
-    /*std::cout << "\nPRE OPERACIJA: " << std::endl;
-    std::cout << "UNDO   undo: " << imagesUndo.size() << std::endl;
-    std::cout << "UNDO   redo: " << imagesRedo.size() << std::endl;*/
-
- //   if(imagesUndo.empty())
-   // {
-     //   return;
-   // }
-    //else
-    //{
-      //  imagesRedo.push(imagesUndo.top());
-       // imagesUndo.pop();
-
-//        if(imagesUndo.empty())
-  //      {
-    //        clearImage();
-      //      update();
-            /*std::cout << "POSLE OPERACIJA\nUNDO   undo: " << imagesUndo.size() << std::endl;
-            std::cout << "UNDO   redo: " << imagesRedo.size() << std::endl;
-            std::cout << "--------------------------------------------------" << std::endl;*/
-        //    return;
-       // }
-
-        //QImage old = imagesUndo.top();
-        //img = old;
-        //update();
-
-        /*std::cout << "POSLE OPERACIJA\nUNDO   undo: " << imagesUndo.size() << std::endl;
-        std::cout << "UNDO   redo: " << imagesRedo.size() << std::endl;
-        std::cout << "--------------------------------------------------" << std::endl;*/
-
-        //return;
-   // }
-
-
-    //if(imagesUndo.empty())
-      //  return;
-
-
     imagesRedo.push(img);
     img = imagesUndo.top();
     imagesUndo.pop();
@@ -250,32 +229,6 @@ void image::undoFunc()
 
 void image::redoFunc()
 {
-    /*
-    std::cout << "\nPRE OPERACIJA: " << std::endl;
-    std::cout << "REDO   undo: " << imagesUndo.size() << std::endl;
-    std::cout << "REDO   redo: " << imagesRedo.size() << std::endl;
-    */
-    //if (imagesRedo.empty())
-    //{
-      //  return;
-    //}
-   // else
-    //{
-        //QImage old = imagesRedo.top();
-        //imagesRedo.pop();
-        //imagesUndo.push(old);
-
-        //img = old;
-        //update();
-        /*
-        std::cout << "POSLE\nREDO   undo: " << imagesUndo.size() << std::endl;
-        std::cout << "REDO   redo: " << imagesRedo.size() << std::endl;*/
-      //  return;
-    //}
-
-    //if(imagesRedo.empty())
-      //  return;
-
     imagesUndo.push(img);
     img = imagesRedo.top();
     imagesRedo.pop();
@@ -286,11 +239,13 @@ void image::redoFunc()
 
 void image::resizeEvent(QResizeEvent *event)
 {
+
     if ((width() > img.width() || height() > img.height()) && whiteBackground)
     {
         int newWidth = qMax(width()-20, img.width());
         int newHeight = qMax(height() + 140, img.height());
         resizeImage(&img, QSize(newWidth, newHeight));
+
         whiteBackground = false;
         update();
     }
