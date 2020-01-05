@@ -158,9 +158,11 @@ void image::clearImage()
 
 void image::mousePressEvent(QMouseEvent *event)
 {
-    imagesUndo.push(img);
-    imagesRedo = std::stack<QImage>{};
-    emit activatedUndo();
+    if(tool != allTools.at("colorpicker")){
+        imagesUndo.push(img);
+        imagesRedo = std::stack<QImage>{};
+        emit activatedUndo();
+    }
 
     if(!crop)
     {
