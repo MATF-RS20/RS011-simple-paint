@@ -8,27 +8,25 @@ Ellipse::Ellipse(QColor* color, int width, QImage* img)
 
 Ellipse::~Ellipse(){}
 
-void Ellipse::mouseClicked(QMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton)
-    {   finallDrawing = false;
+/* mouse events */
+void Ellipse::mouseClicked(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
+        finallDrawing = false;
         tmp = *image;
         localCopy = *image;
         lastPoint = event->pos();
     }
 }
 
-void Ellipse::mouseMoved(QMouseEvent *event)
-{
+void Ellipse::mouseMoved(QMouseEvent *event) {
     *image = tmp;
     tmp = localCopy;
     paint(event->pos());
 }
 
-void Ellipse::mouseReleased(QMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton)
-    {
+void Ellipse::mouseReleased(QMouseEvent *event) {
+
+    if (event->button() == Qt::LeftButton) {
         *image = localCopy;
         finallDrawing = true;
         paint(event->pos());
@@ -37,19 +35,18 @@ void Ellipse::mouseReleased(QMouseEvent *event)
 
 void Ellipse::setWidth(const int width) { myWidth = width; }
 
-void Ellipse::paint(QPoint endPoint)
-{
+/* ellipse's logic */
+void Ellipse::paint(QPoint endPoint) {
     QPainter painter(image);
-    if(!finallDrawing)
-    {
+
+    /* mouse release hasn't happend yet */
+    if(!finallDrawing) {
         painter.setPen(QPen(*myColor,
                             myWidth,
                             Qt::DashDotLine,
                             Qt::RoundCap,
                             Qt::RoundJoin));
-    }
-    else
-    {
+    } else {
         painter.setPen(QPen(*myColor,
                             myWidth,
                             Qt::SolidLine,
@@ -62,7 +59,6 @@ void Ellipse::paint(QPoint endPoint)
     int ry = endPoint.y() - lastPoint.y();
     painter.drawEllipse(QPoint(lastPoint.x()+rx/2, lastPoint.y()+ry/2),
                         abs(rx/2), abs(ry/2));
-
 
     modified = true;
 }

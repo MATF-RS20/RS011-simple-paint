@@ -4,7 +4,6 @@
 #include <QPainter>
 #include <QPen>
 #include <QBrush>
-#include <QDebug>
 #include "headers/tool.h"
 
 class Triangle : public Tool

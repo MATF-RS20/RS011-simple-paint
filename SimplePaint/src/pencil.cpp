@@ -8,34 +8,29 @@ Pencil::Pencil(QColor* color, int width, QImage* img)
 
 Pencil::~Pencil(){}
 
-void Pencil::mouseClicked(QMouseEvent *event)
-{
+/* mouse events */
+void Pencil::mouseClicked(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
-    {
         lastPoint = event->pos();
-    }
 }
 
-void Pencil::mouseMoved(QMouseEvent *event)
-{
+void Pencil::mouseMoved(QMouseEvent *event) {
     if (event->buttons() & Qt::LeftButton)
         paint(event->pos());
 }
 
-void Pencil::mouseReleased(QMouseEvent *event)
-{
+void Pencil::mouseReleased(QMouseEvent *event) {
 
     if (event->button() == Qt::LeftButton)
-    {
         paint(event->pos());
-    }
 }
 
 void Pencil::setWidth(const int width) { Q_UNUSED(width); }
 
-void Pencil::paint(QPoint endPoint)
-{
+/* pencil's logic */
+void Pencil::paint(QPoint endPoint) {
     QPainter painter(image);
+
     painter.setPen(QPen(*myColor,
                         myWidth,
                         Qt::SolidLine,

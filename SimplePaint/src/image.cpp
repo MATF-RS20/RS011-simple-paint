@@ -9,41 +9,51 @@ image::image(QWidget *parent)
     , primaryColor(Qt::black)
     , secondaryColor(Qt::white)
     , has_image(false)
-    , crop(false)
-{
+    , crop(false) {
 
-    allTools.insert(std::pair<QString, Tool*>("pencil", new Pencil(&primaryColor, 2, &img)));
-    allTools.insert(std::pair<QString, Tool*>("eraser", new Eraser(&secondaryColor, 6, &img)));
-    allTools.insert(std::pair<QString, Tool*>("colorpicker", new ColorPicker(&primaryColor, &secondaryColor, &img)));
-    allTools.insert(std::pair<QString, Tool*>("brush", new Brush(&primaryColor, myWidth, &img)));
-    allTools.insert(std::pair<QString, Tool*>("line", new Line(&primaryColor, myWidth, &img)));
-    allTools.insert(std::pair<QString, Tool*>("bucket", new Bucket(&primaryColor, &img)));
-    allTools.insert(std::pair<QString, Tool*>("ellipse", new Ellipse(&primaryColor, myWidth, &img)));
-    allTools.insert(std::pair<QString, Tool*>("rect", new Rect(&primaryColor, myWidth, &img)));
-    allTools.insert(std::pair<QString, Tool*>("triangle", new Triangle(&primaryColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("pencil",
+                                              new Pencil(&primaryColor, 2, &img)));
+    allTools.insert(std::pair<QString, Tool*>("eraser",
+                                              new Eraser(&secondaryColor, 6, &img)));
+    allTools.insert(std::pair<QString, Tool*>("colorpicker",
+                                              new ColorPicker(&primaryColor, &secondaryColor, &img)));
+    allTools.insert(std::pair<QString, Tool*>("brush",
+                                              new Brush(&primaryColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("line",
+                                              new Line(&primaryColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("bucket",
+                                              new Bucket(&primaryColor, &img)));
+    allTools.insert(std::pair<QString, Tool*>("ellipse",
+                                              new Ellipse(&primaryColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("rect",
+                                              new Rect(&primaryColor, myWidth, &img)));
+    allTools.insert(std::pair<QString, Tool*>("triangle",
+                                              new Triangle(&primaryColor, myWidth, &img)));
 
-    // initial tool
+    /* initial tool set */
     tool = allTools.at("pencil");
 
-    // Roots the widget to the top left even if resized
+    /* Roots the widget to the top left even if resized */
     setAttribute(Qt::WA_StaticContents);
 }
 
 image::~image() {}
 
-void image::newSheet()
-{
+/* new functionality's logic */
+void image::newSheet() {
+
     int newWidth = 1234;
     int newHeight = 640;
     resizeImage(&img, QSize(newWidth, newHeight));
     clearImage();
     update();
 
+    /* initial values */
     modified = false;
     has_image = false;
     imagesUndo = std::stack<QImage>{};
     imagesRedo = std::stack<QImage>{};
-    whiteBackground = true;          // initial background
+    whiteBackground = true;
     myWidth = 2;
     primaryColor = Qt::black;
     secondaryColor = Qt::white;
@@ -53,16 +63,17 @@ void image::newSheet()
     return;
 }
 
-bool image::openImage(const QString &fileName)
-{
+/* open functionality's logic */
+bool image::openImage(const QString &fileName) {
+
     QImage loadedImage;
 
-    // If the image wasn't loaded leave this function
+    /* If the image wasn't loaded leave this function */
     if (!loadedImage.load(fileName))
         return false;
 
+    /* resize scribble area */
     QSize newSize = loadedImage.size();
-
     resizeImage(&loadedImage, newSize);
 
     imagesUndo.push(img);
@@ -72,17 +83,18 @@ bool image::openImage(const QString &fileName)
     has_image = true;
     imagesRedo = std::stack<QImage>{};
     emit activatedUndo();
+
+    /* show loaded image */
     update();
     return true;
 }
 
-bool image::saveAsImage(const QString &filename, const char *fileFormat)
-{
+/* save (as) functionality's logic */
+bool image::saveAsImage(const QString &filename, const char *fileFormat) {
     QImage imageToSave = img;
         resizeImage(&imageToSave, img.size());
 
-    if (imageToSave.save(filename, fileFormat))
-    {
+    if (imageToSave.save(filename, fileFormat)) {
         modified = false;
         return true;
     } else {
@@ -90,14 +102,8 @@ bool image::saveAsImage(const QString &filename, const char *fileFormat)
     }
 }
 
-void image::needToCrop()
-{
-    if(has_image)
-        crop = true;
-}
-
-void image::cropImage()
-{
+/* crop functionality's logic */
+void image::cropImage() {
     QRect rect(startPoint, finishPoint);
     QImage croppedImg = img.copy(rect);
     img = croppedImg;
@@ -105,16 +111,24 @@ void image::cropImage()
     crop = false;
 }
 
-void image::scaleImageZoomIn()
-{
-    /*QSize size = img.size() * 0.5;
+void image::needToCrop() {
+    if(has_image)
+        crop = true;
+}
+
+/* TODO */
+void image::scaleImageZoomIn() {
+
+    /*
+    QSize size = img.size() * 0.5;
     QImage scaledImage = img.copy();
     resizeImage(&scaledImage, size);
     img = scaledImage;
-    update();*/
+    update();
+    */
 
-  //  QPixmap scaledImage;
-  //  scaledImage.convertFromImage(img);
+    // QPixmap scaledImage;
+    // scaledImage.convertFromImage(img);
     scaleFactor *= 1.25;
     QSize size = img.size() * scaleFactor;
     auto height = size.height();
@@ -127,8 +141,6 @@ void image::scaleImageZoomIn()
     resizeImage(&image, size);
     img = image;
     update();
-
-
 }
 
 void image::scaleImageZoomOut()
@@ -147,88 +159,88 @@ void image::scaleImageZoomOut()
     update();
 }
 
-void image::setPenColor()
-{
+/* set tools' color */
+void image::setPenColor() {
      auto answer =  QColorDialog::getColor(primaryColor);
      primaryColor = answer.isValid() ? answer : primaryColor;
 }
 
-void image::setBrushWidth()
-{
+/* set brush's width */
+void image::setBrushWidth() {
     bool okay;
 
     int newWidth = QInputDialog::getInt(this, tr("Width"),
                                         tr("Select pen width:"),
                                         penWidth(),
                                         1, 50, 1, &okay);
-    // Change the width
+    /* Change the width */
     if (okay) { tool->setWidth(newWidth); }
 }
 
 
-// Color the image area with white
-void image::clearImage()
-{
+/* Color the image area with white */
+void image::clearImage() {
     img.fill(qRgb(255, 255, 255));
     modified = true;
 
     update();
 }
 
-void image::mousePressEvent(QMouseEvent *event)
-{
+/* mouse events */
+void image::mousePressEvent(QMouseEvent *event) {
+
     modified = true;
-    if(tool != allTools.at("colorpicker"))
-    {
+
+    if(tool != allTools.at("colorpicker")) {
         imagesUndo.push(img);
         imagesRedo = std::stack<QImage>{};
         emit activatedUndo();
     }
 
-    if(!crop) { tool->mouseClicked(event); }
-    else if (crop && has_image && event->button() == Qt::LeftButton) { startPoint = event->pos(); }
+    if(!crop) {
+        tool->mouseClicked(event);
+    } else if (crop && has_image && event->button() == Qt::LeftButton) {
+        startPoint = event->pos();
+    }
     update();
 }
 
-void image::mouseMoveEvent(QMouseEvent *event)
-{
+void image::mouseMoveEvent(QMouseEvent *event) {
+
     if(!crop) { tool->mouseMoved(event); }
     update();
 }
 
-void image::mouseReleaseEvent(QMouseEvent *event)
-{
+void image::mouseReleaseEvent(QMouseEvent *event) {
+
     if(!crop)
-    {
         tool->mouseReleased(event);
-    }
-    else if (event->button() == Qt::LeftButton && has_image && crop)
-    {
+    else if (event->button() == Qt::LeftButton && has_image && crop) {
         finishPoint = event->pos();
         cropImage();
     }
 
     update();
-}
+} /* end of mouse events */
 
-void image::paintEvent(QPaintEvent *event)
-{
+/* paint event */
+void image::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     QRect dirtyRect = event->rect();
 
     painter.drawImage(dirtyRect, img, dirtyRect);
 }
 
-void image::undoFunc()
-{
+/* undo functionality's logic */
+void image::undoFunc() {
     imagesRedo.push(img);
     img = imagesUndo.top();
     imagesUndo.pop();
     update();
 }
 
-void image::redoFunc()
-{
+/* redo functionality's's logic */
+void image::redoFunc() {
     imagesUndo.push(img);
     img = imagesRedo.top();
     imagesRedo.pop();
@@ -236,12 +248,10 @@ void image::redoFunc()
 
 }
 
+/* resize event */
+void image::resizeEvent(QResizeEvent *event) {
 
-void image::resizeEvent(QResizeEvent *event)
-{
-
-    if ((width() > img.width() || height() > img.height()) && whiteBackground)
-    {
+    if ((width() > img.width() || height() > img.height()) && whiteBackground) {
         int newWidth = qMax(width()-20, img.width());
         int newHeight = qMax(height() + 140, img.height());
         resizeImage(&img, QSize(newWidth, newHeight));
@@ -252,10 +262,10 @@ void image::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
+/* resize image or scribble area */
+void image::resizeImage(QImage *img, const QSize &newSize) {
 
-void image::resizeImage(QImage *img, const QSize &newSize)
-{
-    // Check if we need to redraw the image
+    /* Check if we need to redraw the image */
     if (img->size() == newSize)
         return;
 
@@ -267,9 +277,12 @@ void image::resizeImage(QImage *img, const QSize &newSize)
     *img = newImage;
 }
 
-void image::resizeCurrentImg()
-{
-    QString sizesStr = QInputDialog::getText(this, "Set new dimensions", tr("First enter one number for new width, then one for new height:"));
+/* resize current loaded img. Resize functionality's logic */
+void image::resizeCurrentImg() {
+    QString sizesStr = QInputDialog::getText(this,
+                                             "Set new dimensions",
+                                             tr("First enter one number for new width, then one for new height:")
+                                             );
     QStringList sizesNums = sizesStr.split(" ");
     int newWidth = sizesNums.at(0).toInt();
     int newHeight = sizesNums.at(1).toInt();
@@ -278,7 +291,7 @@ void image::resizeCurrentImg()
     update();
 }
 
-void image::setTool(QString nameOfTool)
-{
+/* change current tool */
+void image::setTool(QString nameOfTool) {
     tool = allTools.at(nameOfTool);
 }

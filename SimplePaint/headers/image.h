@@ -37,13 +37,11 @@ public:
     image(QWidget *parent = nullptr);
     ~image() override;
 
-    // the image was modified?
     bool isModified() const { return modified; }
     QColor penColor() const { return primaryColor; }
     int penWidth() const { return myWidth; }
     QImage getImage() const { return img; }
 
-    // Za undo
     std::stack<QImage> imagesUndo;
     std::stack<QImage> imagesRedo;
 
@@ -78,8 +76,8 @@ private:
     void resizeImage(QImage *img, const QSize &newSize);
     void cropImage();
 
-    bool modified;                 // saved after a change?
-    bool whiteBackground;          // initial background
+    bool modified;
+    bool whiteBackground;
 
     int myWidth;
     QColor primaryColor;
@@ -92,7 +90,7 @@ private:
     Tool *tool;
     std::map<QString, Tool*> allTools;
 
-    // Za zoom
+    // Zoom
     QLabel *imageLabel;
     double scaleFactor = 1;
 

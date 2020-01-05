@@ -6,12 +6,12 @@ Line::Line(QColor* color, int width, QImage* img)
     :Tool::Tool(color, width, img)
 {}
 
-Line::~Line(){}
+Line::~Line() {}
 
-void Line::mouseClicked(QMouseEvent *event)
-{
-    if (event->button() == Qt::LeftButton)
-    {
+/* mouse events */
+void Line::mouseClicked(QMouseEvent *event) {
+
+    if (event->button() == Qt::LeftButton) {
         finallDrawing = false;
         tmp = *image;
         localCopy = *image;
@@ -19,42 +19,34 @@ void Line::mouseClicked(QMouseEvent *event)
     }
 }
 
-void Line::mouseMoved(QMouseEvent *event)
-{
+void Line::mouseMoved(QMouseEvent *event) {
     *image = tmp;
     tmp = localCopy;
     paint(event->pos());
 }
 
-void Line::mouseReleased(QMouseEvent *event)
-{
+void Line::mouseReleased(QMouseEvent *event) {
 
-    if (event->button() == Qt::LeftButton)
-    {
+    if (event->button() == Qt::LeftButton) {
         *image = localCopy;
         finallDrawing = true;
         paint(event->pos());
     }
 }
 
-void Line::setWidth(const int width)
-{
-    myWidth = width;
-}
+void Line::setWidth(const int width) { myWidth = width; }
 
-void Line::paint(QPoint endPoint)
-{
+/* line's logic */
+void Line::paint(QPoint endPoint) {
     QPainter painter(image);
-    if(!finallDrawing)
-    {
+
+    if(!finallDrawing) {
         painter.setPen(QPen(*myColor,
                             myWidth,
                             Qt::DashDotLine,
                             Qt::RoundCap,
                             Qt::RoundJoin));
-    }
-    else
-    {
+    } else {
         painter.setPen(QPen(*myColor,
                             myWidth,
                             Qt::SolidLine,

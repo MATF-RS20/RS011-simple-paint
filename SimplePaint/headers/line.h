@@ -27,7 +27,6 @@ private:
     QImage localCopy;
     QImage tmp;
     bool finallDrawing;
-
 };
 
 

@@ -21,9 +21,10 @@ public:
 
 private:
     QPoint lastPoint;
-    void setColor(QColor color);
     QColor *myPrimary, *mySecondary;
     Qt::MouseButton pickerButton;
+
+    void setColor(QColor color);
 };
 
 #endif // COLORPICKER_H

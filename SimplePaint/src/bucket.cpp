@@ -3,39 +3,33 @@
 #include <memory>
 #include "headers/bucket.h"
 
-
 Bucket::Bucket(QColor* color, QImage* img)
     :Tool::Tool(color, img)
 {}
 
 Bucket::~Bucket() {}
 
-void Bucket::mouseClicked(QMouseEvent *event) {event->ignore(); return; }
+/* mouse events */
+void Bucket::mouseClicked(QMouseEvent *event) { event->ignore(); return; }
 
-void Bucket::mouseMoved(QMouseEvent *event) {event->ignore(); return; }
+void Bucket::mouseMoved(QMouseEvent *event) { event->ignore(); return; }
 
-void Bucket::mouseReleased(QMouseEvent *event)
-{
-
+void Bucket::mouseReleased(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
-    {
         paint(event->pos());
-    }
 }
 
+void Bucket::setWidth(const int width) { Q_UNUSED(width) return; }
 
-void Bucket::setWidth(const int width) {Q_UNUSED(width) return; }
+/* bucket's logic */
+void Bucket::paint(QPoint endPoint) {
 
-void Bucket::paint(QPoint endPoint)
-{
     auto color = image->pixelColor(endPoint);
-
     colorFill(endPoint, color);
 }
 
-
-//TODO
-void Bucket::colorFill(QPoint startPoint, QColor color){
+/* Color pixels inside of some polygon */
+void Bucket::colorFill(QPoint startPoint, QColor color) {
     auto presentColor = image->pixelColor(startPoint);
 
     if(presentColor == *myColor)
@@ -46,7 +40,7 @@ void Bucket::colorFill(QPoint startPoint, QColor color){
 
     pointStack->push(startPoint);
 
-    while(!pointStack->empty()){
+    while(!pointStack->empty()) {
         auto topPoint = pointStack->top();
         pointStack->pop();
 
@@ -55,16 +49,16 @@ void Bucket::colorFill(QPoint startPoint, QColor color){
         auto x = topPoint.x();
         auto y = topPoint.y();
 
-        if(x > 0 && image->pixelColor(x-1, y) == color){
+        if(x > 0 && image->pixelColor(x-1, y) == color) {
            pointStack->push(QPoint(x-1, y));
         }
-        if(y > 0 && image->pixelColor(x, y-1) == color){
+        if(y > 0 && image->pixelColor(x, y-1) == color) {
             pointStack->push(QPoint(x, y-1));
         }
-        if(x < image->size().width()-1 && image->pixelColor(x+1, y) == color){
+        if(x < image->size().width()-1 && image->pixelColor(x+1, y) == color) {
             pointStack->push(QPoint(x+1, y));
         }
-        if(y < image->size().height()-1 && image->pixelColor(x, y+1) == color){
+        if(y < image->size().height()-1 && image->pixelColor(x, y+1) == color) {
             pointStack->push(QPoint(x, y+1));
         }
     }

@@ -25,10 +25,6 @@
 #include <QSize>
 #include <QCloseEvent>
 
-#include <QUndoCommand>
-#include <QUndoStack>
-#include <QUndoView>
-
 class image;
 
 QT_BEGIN_NAMESPACE
@@ -60,6 +56,7 @@ signals:
 
 public slots:
     void activateUndo();
+
 private slots:
     void on_actionClose_triggered();
     void closeEvent(QCloseEvent*) override;

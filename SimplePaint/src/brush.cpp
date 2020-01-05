@@ -8,35 +8,28 @@ Brush::Brush(QColor* color, int width, QImage* img)
 
 Brush::~Brush(){}
 
-void Brush::mouseClicked(QMouseEvent *event)
-{
+/* mouse events */
+void Brush::mouseClicked(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
-    {
         lastPoint = event->pos();
-    }
 }
 
-void Brush::mouseMoved(QMouseEvent *event)
-{
+void Brush::mouseMoved(QMouseEvent *event) {
     if (event->buttons() & Qt::LeftButton)
         paint(event->pos());
 }
 
-void Brush::mouseReleased(QMouseEvent *event)
-{
-
-    if (event->button() == Qt::LeftButton)
-    {
+void Brush::mouseReleased(QMouseEvent *event) {
+    if (event->button() == Qt::LeftButton) {
         paint(event->pos());
     }
 }
 
 int Brush::penWidth() const { return myWidth; }
-
 void Brush::setWidth(const int width) { myWidth = width; }
 
-void Brush::paint(QPoint endPoint)
-{
+/* brush's logic */
+void Brush::paint(QPoint endPoint) {
 
     QPainter painter(image);
     painter.setPen(QPen(*myColor,

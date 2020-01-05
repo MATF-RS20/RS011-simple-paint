@@ -7,33 +7,26 @@ Eraser::Eraser(QColor* color, int width, QImage* img)
 
 Eraser::~Eraser(){}
 
-void Eraser::mouseClicked(QMouseEvent *event)
-{
+/* mouse events */
+void Eraser::mouseClicked(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
-    {
         lastPoint = event->pos();
-    }
 }
 
-void Eraser::mouseMoved(QMouseEvent *event)
-{
+void Eraser::mouseMoved(QMouseEvent *event) {
     if (event->buttons() & Qt::LeftButton)
         paint(event->pos());
 }
 
-void Eraser::mouseReleased(QMouseEvent *event)
-{
-
+void Eraser::mouseReleased(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton)
-    {
         paint(event->pos());
-    }
 }
 
 void Eraser::setWidth(const int width) { myWidth = width; }
 
-void Eraser::paint(QPoint endPoint)
-{
+/* eraser's logic */
+void Eraser::paint(QPoint endPoint) {
     QPainter painter(image);
 
     painter.setPen(QPen(*myColor,
@@ -45,7 +38,6 @@ void Eraser::paint(QPoint endPoint)
     painter.drawLine(lastPoint, endPoint);
 
     modified = true;
-
     lastPoint = endPoint;
 }
 

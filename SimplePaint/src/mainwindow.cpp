@@ -5,7 +5,6 @@
 #include "headers/mainwindow.h"
 #include "headers/image.h"
 
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -87,47 +86,46 @@ MainWindow::MainWindow(QWidget *parent)
     qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+MainWindow::~MainWindow() { delete ui; }
 
-void MainWindow::on_actionClose_triggered()
-{
+/* close event */
+void MainWindow::on_actionClose_triggered() {
     QMessageBox::StandardButton reply;
     reply = QMessageBox::question(this, "Warning", "The document has been modified.\nDo you want to save changes or discard them?",
                                   QMessageBox::Save  | QMessageBox::Discard | QMessageBox::Cancel );
+
     if (reply == QMessageBox::Discard)
         QApplication::quit();
-    else if (reply == QMessageBox::Save){
+    else if (reply == QMessageBox::Save) {
         on_actionSave_triggered();
         QApplication::quit();
     }
 }
 
-void MainWindow::closeEvent(QCloseEvent* event)
-{   emit ui->actionClose->triggered();
+void MainWindow::closeEvent(QCloseEvent* event) {
+    emit ui->actionClose->triggered();
     event->ignore();
 }
 
-void MainWindow::on_actionNew_triggered()
-{
+/* new */
+void MainWindow::on_actionNew_triggered() {
     on_actionSave_triggered();
     fileName = "";
+
     ui->actionUndo->setEnabled(false);
     emit newSheet();
 }
 
-void MainWindow::on_actionOpen_triggered()
-{
+/* open */
+void MainWindow::on_actionOpen_triggered() {
+
     QString filename = QFileDialog::getOpenFileName(this,
             tr("Open Picture"),
             path,
             tr("Image Files (*.png *.jpg *.jpeg)")
            );
 
-    if(!filename.isEmpty() && !filename.isNull())
-    {
+    if(!filename.isEmpty() && !filename.isNull()) {
         auto index_of_slash = filename.lastIndexOf("/");
 
         MainWindow::path = filename.chopped(filename.size() - index_of_slash);
@@ -135,8 +133,8 @@ void MainWindow::on_actionOpen_triggered()
     }
 }
 
-void MainWindow::on_actionSave_as_triggered()
-{
+/* save as */
+void MainWindow::on_actionSave_as_triggered() {
     QString initialPath = MainWindow::path + "/untitled." + fileFormat;
 
     fileName = QFileDialog::getSaveFileName(this, tr("Save As"),
@@ -151,18 +149,19 @@ void MainWindow::on_actionSave_as_triggered()
     emit needToSave(fileName, fileFormat.constData());
 }
 
-void MainWindow::on_actionSave_triggered()
-{
-    if(fileName == "")
-    {
+/* save */
+void MainWindow::on_actionSave_triggered() {
+
+    if(fileName == "") {
         on_actionSave_as_triggered();
         return;
     }
     emit needToSave(fileName, fileFormat.constData());
 }
 
-void MainWindow::on_actionHelp_triggered()
-{
+/* help */
+void MainWindow::on_actionHelp_triggered() {
+
     QMessageBox::information(
         this,
         tr("Help"),
@@ -182,19 +181,12 @@ void MainWindow::on_actionHelp_triggered()
 }
 
 
-void MainWindow::on_actionZoom_In_triggered()
-{
-    emit scaleIn();
-}
+void MainWindow::on_actionZoom_In_triggered() { emit scaleIn(); }
 
+void MainWindow::on_actionZoom_Out_triggered() { emit scaleOut(); }
 
-void MainWindow::on_actionZoom_Out_triggered()
-{
-    emit scaleOut();
-}
-
-void MainWindow::on_actionUndo_triggered()
-{
+/* undo */
+void MainWindow::on_actionUndo_triggered() {
     ui->actionRedo->setEnabled(true);
 
     emit undo();
@@ -203,83 +195,58 @@ void MainWindow::on_actionUndo_triggered()
         ui->actionUndo->setEnabled(false);
 }
 
-void MainWindow::on_actionRedo_triggered()
-{   ui->actionUndo->setEnabled(true);
+void MainWindow::activateUndo() {
+    ui->actionUndo->setEnabled(true);
+    ui->actionRedo->setEnabled(false);
+}
+
+/* redo */
+void MainWindow::on_actionRedo_triggered() {
+
+    ui->actionUndo->setEnabled(true);
 
     emit redo();
 
     if(scribbleArea->imagesRedo.empty())
         ui->actionRedo->setEnabled(false);
-
 }
 
-void MainWindow::on_actionPencil_triggered()
-{
-    emit toolChanged("pencil");
-}
+/* tools */
+void MainWindow::on_actionPencil_triggered() { emit toolChanged("pencil"); }
+void MainWindow::on_actionErase_triggered() { emit toolChanged("eraser"); }
+void MainWindow::on_actionColorPicker_triggered() { emit toolChanged("colorpicker"); }
 
-void MainWindow::on_actionErase_triggered()
-{
-    emit toolChanged("eraser");
-}
-
-void MainWindow::on_actionColorPicker_triggered()
-{
-    emit toolChanged("colorpicker");
-}
-
-void MainWindow::on_actionBrush_triggered()
-{
+void MainWindow::on_actionBrush_triggered() {
     emit toolChanged("brush");
     emit widthChanged();
 }
 
-void MainWindow::on_actionLine_triggered()
-{
+void MainWindow::on_actionLine_triggered() {
     emit toolChanged("line");
     emit widthChanged();
 }
 
-void MainWindow::on_actionBucket_triggered()
-{
-    emit toolChanged("bucket");
-}
+void MainWindow::on_actionBucket_triggered() { emit toolChanged("bucket"); }
 
-void MainWindow::on_actionRectangle_triggered()
-{
+void MainWindow::on_actionRectangle_triggered() {
     emit toolChanged("rect");
     emit widthChanged();
 }
 
-void MainWindow::on_actionEllipse_triggered()
-{
+void MainWindow::on_actionEllipse_triggered() {
     emit toolChanged("ellipse");
     emit widthChanged();
 }
 
-void MainWindow::on_actionTriangle_triggered()
-{
+void MainWindow::on_actionTriangle_triggered() {
     emit toolChanged("triangle");
     emit widthChanged();
 }
 
-void MainWindow::on_actionColor_Pallete_triggered()
-{
+/* color dialog */
+void MainWindow::on_actionColor_Pallete_triggered() {
     emit colorChanged();
 }
 
-void MainWindow::on_actionCrop_triggered()
-{
-    emit needToCrop();
-}
-
-void MainWindow::activateUndo()
-{
-    ui->actionUndo->setEnabled(true);
-    ui->actionRedo->setEnabled(false);
-}
-
-void MainWindow::on_actionResize_triggered()
-{
-    emit needToResize();
-}
+void MainWindow::on_actionCrop_triggered() { emit needToCrop(); }
+void MainWindow::on_actionResize_triggered() { emit needToResize(); }
