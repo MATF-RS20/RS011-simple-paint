@@ -50,7 +50,7 @@ signals:
 
 public slots:
     void clearImage();
-    void setPenColor();
+    void setToolColor();
     void setBrushWidth();
     void setTool(QString nameOfTool);
 

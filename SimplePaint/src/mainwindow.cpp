@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     QObject::connect(this,
                      &MainWindow::colorChanged,
                      scribbleArea,
-                     &image::setPenColor);
+                     &image::setToolColor);
 
     QObject::connect(this,
                      &MainWindow::needToSave,

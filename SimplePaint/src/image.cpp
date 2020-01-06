@@ -160,7 +160,14 @@ void image::scaleImageZoomOut()
 }
 
 /* set tools' color */
-void image::setPenColor() {
+void image::setToolColor() {
+
+    if(tool == allTools.at("eraser")) {
+        auto answer =  QColorDialog::getColor(secondaryColor);
+        secondaryColor = answer.isValid() ? answer : secondaryColor;
+        return;
+    }
+
      auto answer =  QColorDialog::getColor(primaryColor);
      primaryColor = answer.isValid() ? answer : primaryColor;
 }
