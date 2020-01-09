@@ -42,8 +42,8 @@ image::~image() {}
 /* new functionality's logic */
 void image::newSheet() {
 
-    int newWidth = 1234;
-    int newHeight = 640;
+    int newWidth = 1240;
+    int newHeight = 680;
     resizeImage(&img, QSize(newWidth, newHeight));
     clearImage();
     update();
@@ -259,8 +259,13 @@ void image::redoFunc() {
 void image::resizeEvent(QResizeEvent *event) {
 
     if ((width() > img.width() || height() > img.height()) && whiteBackground) {
-        int newWidth = qMax(width()-20, img.width());
-        int newHeight = qMax(height() + 140, img.height());
+        //int newWidth = qMax(width()-14, img.width());
+        //int newHeight = qMax(height() + 180, img.height());
+
+        int newWidth = qMax(width()-14, img.width());
+        int newHeight = qMax(height() + 180, img.height());
+
+
         resizeImage(&img, QSize(newWidth, newHeight));
 
         whiteBackground = false;
