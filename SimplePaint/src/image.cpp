@@ -111,6 +111,7 @@ void image::cropImage() {
     QImage croppedImg = img.copy(rect);
     img = croppedImg;
 
+    setMinimumSize(img.size());
     crop = false;
 }
 
@@ -286,6 +287,8 @@ void image::resizeImage(QImage *img, const QSize &newSize) {
 
     QImage newImage(newSize, QImage::Format_RGB32);
     newImage.fill(qRgb(255, 255, 255));
+
+    /* For scroll */
     setMinimumSize(newSize);
 
 
