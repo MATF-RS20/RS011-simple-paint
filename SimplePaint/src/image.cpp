@@ -307,10 +307,15 @@ void image::resizeCurrentImg() {
     int newWidth = sizesNums.at(0).toInt();
     int newHeight = sizesNums.at(1).toInt();
 
+    imagesUndo.push(img);
     img = img.scaled(QSize(newWidth, newHeight));
 
     /* For scroll */
     setMinimumSize(QSize(newWidth, newHeight));
+
+    imagesRedo = std::stack<QImage>{};
+    emit activatedUndo();
+
     update();
 }
 
