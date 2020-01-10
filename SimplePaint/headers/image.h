@@ -14,7 +14,6 @@
 #include <QWidget>
 #include <QColorDialog>
 #include <QObject>
-#include <QLabel>
 
 #include "qpainter.h"
 
@@ -44,6 +43,8 @@ public:
 
     std::stack<QImage> imagesUndo;
     std::stack<QImage> imagesRedo;
+    std::stack<QImage> zoomIn;
+    std::stack<QImage> zoomOut;
 
 signals:
     void activatedUndo();
@@ -89,12 +90,6 @@ private:
     QImage img;
     Tool *tool;
     std::map<QString, Tool*> allTools;
-
-    // Zoom
-    QLabel *imageLabel;
-    double scaleFactor = 1;
-
-
 };
 
 #endif // IMAGE_H
