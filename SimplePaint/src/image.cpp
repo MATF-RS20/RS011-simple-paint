@@ -84,6 +84,9 @@ bool image::openImage(const QString &fileName) {
     imagesRedo = std::stack<QImage>{};
     emit activatedUndo();
 
+    /* For scroll */
+    setMinimumSize(newSize);
+
     /* show loaded image */
     update();
     return true;
