@@ -246,6 +246,7 @@ void image::paintEvent(QPaintEvent *event) {
 void image::undoFunc() {
     imagesRedo.push(img);
     img = imagesUndo.top();
+    setMinimumSize(img.size());
     imagesUndo.pop();
     update();
 }
@@ -254,6 +255,7 @@ void image::undoFunc() {
 void image::redoFunc() {
     imagesUndo.push(img);
     img = imagesRedo.top();
+    setMinimumSize(img.size());
     imagesRedo.pop();
     update();
 
