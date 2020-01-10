@@ -286,6 +286,8 @@ void image::resizeImage(QImage *img, const QSize &newSize) {
 
     QImage newImage(newSize, QImage::Format_RGB32);
     newImage.fill(qRgb(255, 255, 255));
+    setMinimumSize(newSize);
+
 
     QPainter painter(&newImage);
     painter.drawImage(QPoint(0, 0), *img);
@@ -303,6 +305,9 @@ void image::resizeCurrentImg() {
     int newHeight = sizesNums.at(1).toInt();
 
     img = img.scaled(QSize(newWidth, newHeight));
+
+    /* For scroll */
+    setMinimumSize(QSize(newWidth, newHeight));
     update();
 }
 
