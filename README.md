@@ -1,6 +1,9 @@
 # SIMPLE PAINT :art:
 
-Simple Paint predstavlja program za crtanje i jednostavnu manipulaciju slikama, po ugledu na postojeći program Paint. Više informacija o projektu i njegovoj izradi možete pronaći na [wiki](https://github.com/MATF-RS20/RS011-simple-paint/wiki) stranama projekta. 
+## Ukratko o projektu: 
+Simple Paint predstavlja program za crtanje i jednostavnu manipulaciju slikama, po ugledu na postojeći program Paint. 
+Simple Paint nastao je kao projekat i okviru kursa _Razvoj softvera_ na Matematičkom fakultetu, u Beogradu.
+Napisan je u programskom jeziku C++.
 
 ## Uslovi: :pencil:
 * ```g++ [c++17]```
@@ -12,4 +15,7 @@ Simple Paint predstavlja program za crtanje i jednostavnu manipulaciju slikama, 
 - [Nikola Stamenić](https://github.com/stuckey10): mi16177@math.rs
 
 
-![slika](https://github.com/MATF-RS20/RS011-simple-paint/blob/master/screenshots/sedmica_2.png)
+![app](https://github.com/MATF-RS20/RS011-simple-paint/blob/master/screenshots/Screenshot%20from%202020-01-09%2013-35-57.png)
+
+
+Više informacija o projektu i njegovoj izradi možete pronaći na [wiki](https://github.com/MATF-RS20/RS011-simple-paint/wiki) stranama projekta. 

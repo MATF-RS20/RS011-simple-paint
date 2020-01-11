@@ -42,8 +42,8 @@ image::~image() {}
 /* new functionality's logic */
 void image::newSheet() {
 
-    int newWidth = 1234;
-    int newHeight = 640;
+    int newWidth = 1240;
+    int newHeight = 680;
     resizeImage(&img, QSize(newWidth, newHeight));
     clearImage();
     update();
@@ -53,6 +53,8 @@ void image::newSheet() {
     has_image = false;
     imagesUndo = std::stack<QImage>{};
     imagesRedo = std::stack<QImage>{};
+    zoomIn = std::stack<QImage>{};
+    zoomOut = std::stack<QImage>{};
     whiteBackground = true;
     myWidth = 2;
     primaryColor = Qt::black;
@@ -81,8 +83,15 @@ bool image::openImage(const QString &fileName) {
 
     modified = false;
     has_image = true;
+
+    zoomIn = std::stack<QImage>{};
+    zoomOut = std::stack<QImage>{};
+
     imagesRedo = std::stack<QImage>{};
     emit activatedUndo();
+
+    /* For scroll */
+    setMinimumSize(newSize);
 
     /* show loaded image */
     update();
@@ -108,6 +117,10 @@ void image::cropImage() {
     QImage croppedImg = img.copy(rect);
     img = croppedImg;
 
+    zoomIn = std::stack<QImage>{};
+    zoomOut = std::stack<QImage>{};
+
+    setMinimumSize(img.size());
     crop = false;
 }
 
@@ -117,50 +130,49 @@ void image::needToCrop() {
 }
 
 /* TODO */
-void image::scaleImageZoomIn() {
-
-    /*
-    QSize size = img.size() * 0.5;
-    QImage scaledImage = img.copy();
-    resizeImage(&scaledImage, size);
-    img = scaledImage;
-    update();
-    */
-
-    // QPixmap scaledImage;
-    // scaledImage.convertFromImage(img);
-    scaleFactor *= 1.25;
-    QSize size = img.size() * scaleFactor;
-    auto height = size.height();
-    auto width = size.width();
-    QPixmap scaledImage;
-    scaledImage.convertFromImage(img);
-    scaledImage.scaledToWidth(width);
-    scaledImage.scaledToHeight(height);
-    QImage image = scaledImage.toImage();
-    resizeImage(&image, size);
-    img = image;
+void image::scaleImageZoomIn()
+{
+    imagesUndo.push(img);
+    if(zoomIn.empty()){
+        zoomOut.push(img);
+        QSize newSize = img.size() * 1.2;
+        img = img.scaled(newSize);
+    } else {
+        img = zoomIn.top();
+        zoomIn.pop();
+    }
+    setMinimumSize(img.size());
+    imagesRedo = std::stack<QImage>{};
+    emit activatedUndo();
     update();
 }
 
 void image::scaleImageZoomOut()
 {
-    scaleFactor *= 0.8;
-    QSize size = img.size() * scaleFactor;
-    auto height = size.height();
-    auto width = size.width();
-    QPixmap scaledImage;
-    scaledImage.convertFromImage(img);
-    scaledImage.scaledToWidth(width);
-    scaledImage.scaledToHeight(height);
-    QImage image = scaledImage.toImage();
-    resizeImage(&image, size);
-    img = image;
+    imagesUndo.push(img);
+    if (zoomOut.empty()){
+        zoomIn.push(img);
+        QSize newSize = img.size()*0.8;
+        img = img.scaled(newSize);
+    } else{
+        img = zoomOut.top();
+        zoomOut.pop();
+    }
+    setMinimumSize(img.size());
+    imagesRedo = std::stack<QImage>{};
+    emit activatedUndo();
     update();
 }
 
 /* set tools' color */
-void image::setPenColor() {
+void image::setToolColor() {
+
+    if(tool == allTools.at("eraser")) {
+        auto answer =  QColorDialog::getColor(secondaryColor);
+        secondaryColor = answer.isValid() ? answer : secondaryColor;
+        return;
+    }
+
      auto answer =  QColorDialog::getColor(primaryColor);
      primaryColor = answer.isValid() ? answer : primaryColor;
 }
@@ -235,7 +247,12 @@ void image::paintEvent(QPaintEvent *event) {
 void image::undoFunc() {
     imagesRedo.push(img);
     img = imagesUndo.top();
+    setMinimumSize(img.size());
     imagesUndo.pop();
+
+    zoomIn = std::stack<QImage>{};
+    zoomOut = std::stack<QImage>{};
+
     update();
 }
 
@@ -243,7 +260,12 @@ void image::undoFunc() {
 void image::redoFunc() {
     imagesUndo.push(img);
     img = imagesRedo.top();
+    setMinimumSize(img.size());
     imagesRedo.pop();
+
+    zoomIn = std::stack<QImage>{};
+    zoomOut = std::stack<QImage>{};
+
     update();
 
 }
@@ -252,8 +274,13 @@ void image::redoFunc() {
 void image::resizeEvent(QResizeEvent *event) {
 
     if ((width() > img.width() || height() > img.height()) && whiteBackground) {
-        int newWidth = qMax(width()-20, img.width());
-        int newHeight = qMax(height() + 140, img.height());
+        //int newWidth = qMax(width()-14, img.width());
+        //int newHeight = qMax(height() + 180, img.height());
+
+        int newWidth = qMax(width()-14, img.width());
+        int newHeight = qMax(height() + 180, img.height());
+
+
         resizeImage(&img, QSize(newWidth, newHeight));
 
         whiteBackground = false;
@@ -272,6 +299,10 @@ void image::resizeImage(QImage *img, const QSize &newSize) {
     QImage newImage(newSize, QImage::Format_RGB32);
     newImage.fill(qRgb(255, 255, 255));
 
+    /* For scroll */
+    setMinimumSize(newSize);
+
+
     QPainter painter(&newImage);
     painter.drawImage(QPoint(0, 0), *img);
     *img = newImage;
@@ -287,7 +318,18 @@ void image::resizeCurrentImg() {
     int newWidth = sizesNums.at(0).toInt();
     int newHeight = sizesNums.at(1).toInt();
 
+    imagesUndo.push(img);
     img = img.scaled(QSize(newWidth, newHeight));
+
+    /* For scroll */
+    setMinimumSize(QSize(newWidth, newHeight));
+
+    zoomIn = std::stack<QImage>{};
+    zoomOut = std::stack<QImage>{};
+
+    imagesRedo = std::stack<QImage>{};
+    emit activatedUndo();
+
     update();
 }
 

@@ -24,6 +24,7 @@
 #include <QImage>
 #include <QSize>
 #include <QCloseEvent>
+#include <QScrollArea>
 
 class image;
 
@@ -92,6 +93,7 @@ private:
     QString fileName = "";
     QByteArray fileFormat = "png";
     image *scribbleArea;
+    QScrollArea* scrollArea;
 protected:
 
 };

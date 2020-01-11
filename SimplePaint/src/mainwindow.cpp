@@ -5,20 +5,32 @@
 #include "headers/mainwindow.h"
 #include "headers/image.h"
 
+#include <QPalette>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , path(QDir::home().path() + "/Pictures")
-    , scribbleArea(new image)
 {
     ui->setupUi(this);
     QWidget::showMaximized();
-    setCentralWidget(scribbleArea);
+
+    scribbleArea = new image(this);
+
+    scrollArea = new QScrollArea();
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(scribbleArea);
+    scrollArea->setStyleSheet("background-color:rgb(235, 180, 255);");
+    scrollArea->verticalScrollBar()->setStyleSheet(
+                "background-color: rgb(230, 230, 230);");
+    scrollArea->horizontalScrollBar()->setStyleSheet(
+                "background-color: rgb(230, 230, 230);");
+    setCentralWidget(scrollArea);
 
     QObject::connect(this,
                      &MainWindow::colorChanged,
                      scribbleArea,
-                     &image::setPenColor);
+                     &image::setToolColor);
 
     QObject::connect(this,
                      &MainWindow::needToSave,
@@ -83,7 +95,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->actionUndo->setEnabled(false);
     ui->actionRedo->setEnabled(false);
-    qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
+    //qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
 }
 
 MainWindow::~MainWindow() { delete ui; }
