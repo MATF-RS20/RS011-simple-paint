@@ -5,6 +5,8 @@
 #include "headers/mainwindow.h"
 #include "headers/image.h"
 
+#include <QPalette>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -18,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent)
     scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(scribbleArea);
+    scrollArea->setStyleSheet("background-color:rgb(235, 180, 255);");
+    scrollArea->verticalScrollBar()->setStyleSheet(
+                "background-color: rgb(230, 230, 230);");
+    scrollArea->horizontalScrollBar()->setStyleSheet(
+                "background-color: rgb(230, 230, 230);");
     setCentralWidget(scrollArea);
 
     QObject::connect(this,
@@ -88,7 +95,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->actionUndo->setEnabled(false);
     ui->actionRedo->setEnabled(false);
-    qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
+    //qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
 }
 
 MainWindow::~MainWindow() { delete ui; }
