@@ -249,6 +249,10 @@ void image::undoFunc() {
     img = imagesUndo.top();
     setMinimumSize(img.size());
     imagesUndo.pop();
+
+    zoomIn = std::stack<QImage>{};
+    zoomOut = std::stack<QImage>{};
+
     update();
 }
 
@@ -258,6 +262,10 @@ void image::redoFunc() {
     img = imagesRedo.top();
     setMinimumSize(img.size());
     imagesRedo.pop();
+
+    zoomIn = std::stack<QImage>{};
+    zoomOut = std::stack<QImage>{};
+
     update();
 
 }
