@@ -281,22 +281,34 @@ void image::resizeImage(QImage *img, const QSize &newSize) {
 
 /* resize current loaded img. Resize functionality's logic */
 void image::resizeCurrentImg() {
-    QString sizesStr = QInputDialog::getText(this,
+    /*QString sizesStr = QInputDialog::getText(this,
                                              "Set new dimensions",
                                              tr("First enter one number for new width, then one for new height:")
                                              );
-    QStringList sizesNums = sizesStr.split(" ");
-    int newWidth = sizesNums.at(0).toInt();
-    int newHeight = sizesNums.at(1).toInt();
+    */
+    bool okayW;
+    int newWidth = QInputDialog::getInt(this, tr("Width"),
+                                        tr("Select width:"),
+                                        200,
+                                        1, 2000, 1, &okayW);
+    bool okayH;
+    int newHeight = QInputDialog::getInt(this, tr("Height"),
+                                        tr("Select height:"),
+                                        200,
+                                        1, 2000, 1, &okayH);
 
-    imagesUndo.push(img);
-    img = img.scaled(QSize(newWidth, newHeight));
+    /* Change size */
+    if (okayW && okayH) {
+        imagesUndo.push(img);
+        img = img.scaled(QSize(newWidth, newHeight));
 
-    /* For scroll */
-    setMinimumSize(QSize(newWidth, newHeight));
+        /* For scroll */
+        setMinimumSize(QSize(newWidth, newHeight));
 
-    imagesRedo = std::stack<QImage>{};
-    emit activatedUndo();
+        imagesRedo = std::stack<QImage>{};
+        emit activatedUndo();
+    }
+
 
     update();
 }
