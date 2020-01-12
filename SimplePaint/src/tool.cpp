@@ -20,5 +20,4 @@ Tool::Tool(QImage* img)
     , image(img)
 {}
 
-Tool::~Tool()
-{}
+Tool::~Tool() {}
