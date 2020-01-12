@@ -6,7 +6,7 @@ Pencil::Pencil(QColor* color, int width, QImage* img)
     :Tool::Tool(color, width, img)
 {}
 
-Pencil::~Pencil(){}
+Pencil::~Pencil() {}
 
 /* mouse events */
 void Pencil::mouseClicked(QMouseEvent *event) {

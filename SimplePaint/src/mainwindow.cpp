@@ -98,7 +98,11 @@ MainWindow::MainWindow(QWidget *parent)
     //qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
 }
 
-MainWindow::~MainWindow() { delete ui; }
+MainWindow::~MainWindow() {
+    delete scribbleArea;
+    delete scrollArea;
+    delete ui;
+}
 
 /* close event */
 void MainWindow::on_actionClose_triggered() {
@@ -191,7 +195,6 @@ void MainWindow::on_actionHelp_triggered() {
            "8. Resize - Resizes current image.\n"
            "9. Crop - Crops selected area of the current image.\n") );
 }
-
 
 void MainWindow::on_actionZoom_In_triggered() { emit scaleIn(); }
 

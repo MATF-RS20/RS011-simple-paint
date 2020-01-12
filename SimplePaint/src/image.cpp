@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <iterator>
 #include "headers/image.h"
 
 image::image(QWidget *parent)
@@ -37,7 +38,11 @@ image::image(QWidget *parent)
     setAttribute(Qt::WA_StaticContents);
 }
 
-image::~image() {}
+image::~image() {
+    for (auto i = std::cbegin(allTools); i != std::cend(allTools); i++) {
+        delete allTools.at(i->first);
+    }
+}
 
 /* new functionality's logic */
 void image::newSheet() {
@@ -130,8 +135,7 @@ void image::needToCrop() {
 }
 
 /* TODO */
-void image::scaleImageZoomIn()
-{
+void image::scaleImageZoomIn() {
     imagesUndo.push(img);
     if(zoomIn.empty()){
         zoomOut.push(img);
@@ -147,8 +151,7 @@ void image::scaleImageZoomIn()
     update();
 }
 
-void image::scaleImageZoomOut()
-{
+void image::scaleImageZoomOut() {
     imagesUndo.push(img);
     if (zoomOut.empty()){
         zoomIn.push(img);
