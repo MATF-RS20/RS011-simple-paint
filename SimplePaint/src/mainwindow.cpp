@@ -20,15 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(scribbleArea);
-    scrollArea->setStyleSheet("background-color:rgb(235, 180, 255);");
+    //scrollArea->setStyleSheet("background-color:rgb(235, 180, 255);");
     scrollArea->verticalScrollBar()->setStyleSheet(
                 "background-color: rgb(230, 230, 230);");
     scrollArea->horizontalScrollBar()->setStyleSheet(
                 "background-color: rgb(230, 230, 230);");
     setCentralWidget(scrollArea);
-
-    //ui->scrollArea->setWidget(scribbleArea);
-    //setCentralWidget(ui->scrollArea);
 
     QObject::connect(this,
                      &MainWindow::colorChanged,

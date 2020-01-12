@@ -68,7 +68,6 @@ protected:
     void mouseReleaseEvent(QMouseEvent *event) override;
 
     void paintEvent(QPaintEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
 
 private:
     void resizeImage(QImage *img, const QSize &newSize);

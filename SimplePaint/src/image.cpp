@@ -11,7 +11,11 @@ image::image(QWidget *parent)
     , primaryColor(Qt::black)
     , secondaryColor(Qt::white)    
     , has_image(false)
-    , crop(false){
+    , crop(false)
+    , img(QImage(1240, 680, QImage::Format_RGB32))
+{
+
+    img.fill(QColor(255,255,255));
 
     allTools.insert(std::pair<QString, Tool*>("pencil",
                                               new Pencil(&primaryColor, 2, &img)));
@@ -47,10 +51,8 @@ image::~image() {
 
 /* new functionality's logic */
 void image::newSheet() {
-
-    int newWidth = 1240;
-    int newHeight = 680;
-    resizeImage(&img, QSize(newWidth, newHeight));
+    img = QImage(1240, 680, QImage::Format_RGB32);
+    //resizeImage(&img, QSize(newWidth, newHeight));
     clearImage();
     update();
 
@@ -65,6 +67,7 @@ void image::newSheet() {
     secondaryColor = Qt::white;
     crop = false;
     tool = allTools.at("pencil");
+    setMinimumSize(img.size());
 
     return;
 }
@@ -93,7 +96,6 @@ bool image::openImage(const QString &fileName) {
 
     /* For scroll */
     setMinimumSize(newSize);
-
     /* show loaded image */
     update();
     return true;
@@ -242,24 +244,7 @@ void image::redoFunc() {
     update();
 }
 
-/* resize event */
-void image::resizeEvent(QResizeEvent *event) {
 
-    if ((width() > img.width() || height() > img.height()) && whiteBackground) {
-        //int newWidth = qMax(width()-14, img.width());
-        //int newHeight = qMax(height() + 180, img.height());
-
-        int newWidth = qMax(width()-14, img.width());
-        int newHeight = qMax(height() + 180, img.height());
-
-
-        resizeImage(&img, QSize(newWidth, newHeight));
-
-        whiteBackground = false;
-        update();
-    }
-    QWidget::resizeEvent(event);
-}
 
 /* resize image or scribble area */
 void image::resizeImage(QImage *img, const QSize &newSize) {
@@ -272,7 +257,7 @@ void image::resizeImage(QImage *img, const QSize &newSize) {
     newImage.fill(qRgb(255, 255, 255));
 
     /* For scroll */
-    setMinimumSize(newSize);
+    //setMinimumSize(newSize);
 
     QPainter painter(&newImage);
     painter.drawImage(QPoint(0, 0), *img);
