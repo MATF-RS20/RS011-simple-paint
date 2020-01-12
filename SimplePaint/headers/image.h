@@ -43,9 +43,6 @@ public:
 
     std::stack<QImage> imagesUndo;
     std::stack<QImage> imagesRedo;
-    std::stack<QImage> zoomIn;
-    std::stack<QImage> zoomOut;
-
 signals:
     void activatedUndo();
 
@@ -81,6 +78,7 @@ private:
     bool whiteBackground;
 
     int myWidth;
+    int scaleFactor;
     QColor primaryColor;
     QColor secondaryColor;
     bool has_image;

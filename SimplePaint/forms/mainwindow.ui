@@ -29,6 +29,35 @@
    <property name="layoutDirection">
     <enum>Qt::LeftToRight</enum>
    </property>
+   <widget class="QScrollArea" name="scrollArea">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1261</width>
+      <height>501</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>1261</width>
+      <height>501</height>
+     </size>
+    </property>
+    <property name="widgetResizable">
+     <bool>true</bool>
+    </property>
+    <widget class="QWidget" name="scrollAreaWidgetContents">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1259</width>
+       <height>499</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -36,7 +65,7 @@
      <x>0</x>
      <y>0</y>
      <width>1300</width>
-     <height>22</height>
+     <height>20</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -74,8 +103,8 @@
      <rect>
       <x>307</x>
       <y>163</y>
-      <width>159</width>
-      <height>75</height>
+      <width>148</width>
+      <height>69</height>
      </rect>
     </property>
     <property name="title">

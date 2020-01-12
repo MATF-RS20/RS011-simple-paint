@@ -17,15 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     scribbleArea = new image(this);
 
-    scrollArea = new QScrollArea();
-    scrollArea->setWidgetResizable(true);
-    scrollArea->setWidget(scribbleArea);
-    scrollArea->setStyleSheet("background-color:rgb(235, 180, 255);");
-    scrollArea->verticalScrollBar()->setStyleSheet(
-                "background-color: rgb(230, 230, 230);");
-    scrollArea->horizontalScrollBar()->setStyleSheet(
-                "background-color: rgb(230, 230, 230);");
-    setCentralWidget(scrollArea);
+    ui->scrollArea->setWidget(scribbleArea);
+    setCentralWidget(ui->scrollArea);
 
     QObject::connect(this,
                      &MainWindow::colorChanged,
@@ -95,12 +88,10 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->actionUndo->setEnabled(false);
     ui->actionRedo->setEnabled(false);
-    //qApp->setStyleSheet("QMainWindow { background: rgb(235, 180, 255); }");
 }
 
 MainWindow::~MainWindow() {
     delete scribbleArea;
-    delete scrollArea;
     delete ui;
 }
 
@@ -129,6 +120,7 @@ void MainWindow::on_actionNew_triggered() {
     fileName = "";
 
     ui->actionUndo->setEnabled(false);
+    ui->actionRedo->setEnabled(false);
     emit newSheet();
 }
 
@@ -160,7 +152,7 @@ void MainWindow::on_actionSave_as_triggered() {
                                    .arg(QString::fromLatin1(fileFormat)));
 
     if (fileName.isEmpty())
-            return;
+        return;
 
     emit needToSave(fileName, fileFormat.constData());
 }

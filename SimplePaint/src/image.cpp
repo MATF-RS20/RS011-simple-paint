@@ -7,10 +7,11 @@ image::image(QWidget *parent)
     , modified(false)
     , whiteBackground(true)
     , myWidth(2)
+    , scaleFactor(1)
     , primaryColor(Qt::black)
-    , secondaryColor(Qt::white)
+    , secondaryColor(Qt::white)    
     , has_image(false)
-    , crop(false) {
+    , crop(false){
 
     allTools.insert(std::pair<QString, Tool*>("pencil",
                                               new Pencil(&primaryColor, 2, &img)));
@@ -58,8 +59,6 @@ void image::newSheet() {
     has_image = false;
     imagesUndo = std::stack<QImage>{};
     imagesRedo = std::stack<QImage>{};
-    zoomIn = std::stack<QImage>{};
-    zoomOut = std::stack<QImage>{};
     whiteBackground = true;
     myWidth = 2;
     primaryColor = Qt::black;
@@ -89,9 +88,6 @@ bool image::openImage(const QString &fileName) {
     modified = false;
     has_image = true;
 
-    zoomIn = std::stack<QImage>{};
-    zoomOut = std::stack<QImage>{};
-
     imagesRedo = std::stack<QImage>{};
     emit activatedUndo();
 
@@ -105,10 +101,10 @@ bool image::openImage(const QString &fileName) {
 
 /* save (as) functionality's logic */
 bool image::saveAsImage(const QString &filename, const char *fileFormat) {
-    QImage imageToSave = img;
-        resizeImage(&imageToSave, img.size());
 
-    if (imageToSave.save(filename, fileFormat)) {
+    if (img.save(filename, fileFormat)) {
+        imagesUndo = std::stack<QImage>{};
+        imagesRedo = std::stack<QImage>{};
         modified = false;
         return true;
     } else {
@@ -122,9 +118,6 @@ void image::cropImage() {
     QImage croppedImg = img.copy(rect);
     img = croppedImg;
 
-    zoomIn = std::stack<QImage>{};
-    zoomOut = std::stack<QImage>{};
-
     setMinimumSize(img.size());
     crop = false;
 }
@@ -136,34 +129,16 @@ void image::needToCrop() {
 
 /* TODO */
 void image::scaleImageZoomIn() {
-    imagesUndo.push(img);
-    if(zoomIn.empty()){
-        zoomOut.push(img);
-        QSize newSize = img.size() * 1.2;
-        img = img.scaled(newSize);
-    } else {
-        img = zoomIn.top();
-        zoomIn.pop();
-    }
-    setMinimumSize(img.size());
-    imagesRedo = std::stack<QImage>{};
-    emit activatedUndo();
+    scaleFactor += 1;
+    scaleFactor = scaleFactor > 3 ? 3 : scaleFactor;
+    setMinimumSize(QSize(img.size().rwidth()*scaleFactor, img.size().rheight()*scaleFactor));
     update();
 }
 
 void image::scaleImageZoomOut() {
-    imagesUndo.push(img);
-    if (zoomOut.empty()){
-        zoomIn.push(img);
-        QSize newSize = img.size()*0.8;
-        img = img.scaled(newSize);
-    } else{
-        img = zoomOut.top();
-        zoomOut.pop();
-    }
-    setMinimumSize(img.size());
-    imagesRedo = std::stack<QImage>{};
-    emit activatedUndo();
+    scaleFactor -= 1;
+    scaleFactor = scaleFactor < 1 ? 1 : scaleFactor;
+    setMinimumSize(QSize(img.size().rwidth()*scaleFactor, img.size().rheight()*scaleFactor));
     update();
 }
 
@@ -204,6 +179,7 @@ void image::clearImage() {
 /* mouse events */
 void image::mousePressEvent(QMouseEvent *event) {
 
+    event->setLocalPos(QPoint(event->pos().rx()/scaleFactor, event->pos().y()/scaleFactor));
     modified = true;
 
     if(tool != allTools.at("colorpicker")) {
@@ -222,12 +198,13 @@ void image::mousePressEvent(QMouseEvent *event) {
 
 void image::mouseMoveEvent(QMouseEvent *event) {
 
+    event->setLocalPos(QPoint(event->pos().rx()/scaleFactor, event->pos().y()/scaleFactor));
     if(!crop) { tool->mouseMoved(event); }
     update();
 }
 
 void image::mouseReleaseEvent(QMouseEvent *event) {
-
+    event->setLocalPos(QPoint(event->pos().rx()/scaleFactor, event->pos().y()/scaleFactor));
     if(!crop)
         tool->mouseReleased(event);
     else if (event->button() == Qt::LeftButton && has_image && crop) {
@@ -243,18 +220,15 @@ void image::paintEvent(QPaintEvent *event) {
     QPainter painter(this);
     QRect dirtyRect = event->rect();
 
-    painter.drawImage(dirtyRect, img, dirtyRect);
+    painter.drawImage(dirtyRect, img.scaled(img.size().rwidth()*scaleFactor,
+                                            img.size().rheight()*scaleFactor), dirtyRect);
 }
 
 /* undo functionality's logic */
 void image::undoFunc() {
     imagesRedo.push(img);
     img = imagesUndo.top();
-    setMinimumSize(img.size());
     imagesUndo.pop();
-
-    zoomIn = std::stack<QImage>{};
-    zoomOut = std::stack<QImage>{};
 
     update();
 }
@@ -263,14 +237,9 @@ void image::undoFunc() {
 void image::redoFunc() {
     imagesUndo.push(img);
     img = imagesRedo.top();
-    setMinimumSize(img.size());
     imagesRedo.pop();
 
-    zoomIn = std::stack<QImage>{};
-    zoomOut = std::stack<QImage>{};
-
     update();
-
 }
 
 /* resize event */
@@ -305,7 +274,6 @@ void image::resizeImage(QImage *img, const QSize &newSize) {
     /* For scroll */
     setMinimumSize(newSize);
 
-
     QPainter painter(&newImage);
     painter.drawImage(QPoint(0, 0), *img);
     *img = newImage;
@@ -326,9 +294,6 @@ void image::resizeCurrentImg() {
 
     /* For scroll */
     setMinimumSize(QSize(newWidth, newHeight));
-
-    zoomIn = std::stack<QImage>{};
-    zoomOut = std::stack<QImage>{};
 
     imagesRedo = std::stack<QImage>{};
     emit activatedUndo();
