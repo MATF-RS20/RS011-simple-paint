@@ -15,7 +15,7 @@ Napisan je u programskom jeziku C++.
 - [Nikola Stamenić](https://github.com/stuckey10): mi16177@math.rs
 
 
-![app](https://github.com/MATF-RS20/RS011-simple-paint/blob/master/screenshots/Screenshot%20from%202020-01-09%2013-35-57.png)
+![app](https://github.com/MATF-RS20/RS011-simple-paint/blob/master/screenshots/FinalScreenshot.png)
 
 
 Više informacija o projektu i njegovoj izradi možete pronaći na [wiki](https://github.com/MATF-RS20/RS011-simple-paint/wiki) stranama projekta. 
