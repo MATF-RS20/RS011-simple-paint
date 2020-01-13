@@ -116,7 +116,20 @@ bool image::saveAsImage(const QString &filename, const char *fileFormat) {
 
 /* crop functionality's logic */
 void image::cropImage() {
-    QRect rect(startPoint, finishPoint);
+    QRect rect;
+    if (startPoint.x() < finishPoint.x() && startPoint.y() < finishPoint.y()) {
+        rect = QRect(startPoint, finishPoint);
+    } else if (startPoint.x() > finishPoint.x() && startPoint.y() > finishPoint.y()){
+        rect = QRect(finishPoint, startPoint);
+    } else if (startPoint.x() < finishPoint.x()) {
+        QPoint start(startPoint.x(), finishPoint.y());
+        QPoint finish(finishPoint.x(), startPoint.y());
+        rect = QRect(start, finish);
+    } else {
+        QPoint start(startPoint.x(), finishPoint.y());
+        QPoint finish(finishPoint.x(), startPoint.y());
+        rect = QRect(finish, start);
+    }
     QImage croppedImg = img.copy(rect);
     img = croppedImg;
 
