@@ -244,6 +244,7 @@ void image::undoFunc() {
     imagesRedo.push(img);
     img = imagesUndo.top();
     imagesUndo.pop();
+    setMinimumSize(img.size());
 
     update();
 }
@@ -253,6 +254,7 @@ void image::redoFunc() {
     imagesUndo.push(img);
     img = imagesRedo.top();
     imagesRedo.pop();
+    setMinimumSize(img.size());
 
     update();
 }
