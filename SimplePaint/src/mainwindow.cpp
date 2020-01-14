@@ -5,7 +5,6 @@
 #include "headers/mainwindow.h"
 #include "headers/image.h"
 
-#include <QPalette>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -16,15 +15,11 @@ MainWindow::MainWindow(QWidget *parent)
     QWidget::showMaximized();
 
     scribbleArea = new image(this);
+    scribbleArea->setMinimumSize(scribbleArea->getImage().size());
 
     scrollArea = new QScrollArea();
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(scribbleArea);
-    //scrollArea->setStyleSheet("background-color:rgb(235, 180, 255);");
-    scrollArea->verticalScrollBar()->setStyleSheet(
-                "background-color: rgb(230, 230, 230);");
-    scrollArea->horizontalScrollBar()->setStyleSheet(
-                "background-color: rgb(230, 230, 230);");
     setCentralWidget(scrollArea);
 
     QObject::connect(this,
