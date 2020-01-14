@@ -244,7 +244,8 @@ void image::undoFunc() {
     imagesRedo.push(img);
     img = imagesUndo.top();
     imagesUndo.pop();
-    setMinimumSize(img.size());
+    setMinimumSize(QSize(img.size().rwidth()*scaleFactor,
+                         img.size().rheight()*scaleFactor));
 
     update();
 }
@@ -254,7 +255,8 @@ void image::redoFunc() {
     imagesUndo.push(img);
     img = imagesRedo.top();
     imagesRedo.pop();
-    setMinimumSize(img.size());
+    setMinimumSize(QSize(img.size().rwidth()*scaleFactor,
+                         img.size().rheight()*scaleFactor));
 
     update();
 }
